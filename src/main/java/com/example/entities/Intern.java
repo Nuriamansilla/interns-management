@@ -53,14 +53,14 @@ public class Intern implements Serializable {
     @Enumerated(EnumType.STRING)
     private Center center;
 
-    @OneToOne
+   // @OneToOne
     private AcademicInformation academicInformation;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-    @JsonIgnore
+  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+   // @JsonIgnore
     private Language language;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-    @JsonIgnore
+  //  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+  //  @JsonIgnore
     private HRfeedback hrfeedback;
 }
