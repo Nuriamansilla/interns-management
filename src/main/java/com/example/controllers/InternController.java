@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +36,7 @@ public class InternController {
 
 @PostMapping
 @Transactional
-    public  ResponseEntity<Map<String, Object>> saveProduct(@Valid @RequestBody Intern intern,
+    public  ResponseEntity<Map<String, Object>> saveIntern(@Valid @RequestBody Intern intern,
         BindingResult results 
     ){
 
@@ -86,6 +88,57 @@ public class InternController {
         return responseEntity;
     }
 
+// UPDATE
+
+@PutMapping("/{id}")
+@Transactional
+    public  ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
+        BindingResult results, @PathVariable(name = "id", required = true) Integer id ){
+
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        Map<String, Object> responseAsMap = new HashMap<>();
+
+        if (results.hasErrors()) {
+            
+            List<ObjectError> objectErrors = results.getAllErrors();
+
+            List<String> errorMessage = new ArrayList<>();
+
+            objectErrors.forEach(objectError -> errorMessage.add(objectError.getDefaultMessage()));
+
+            responseAsMap.put("errors", errorMessage);
+            responseAsMap.put("intern", intern);
+
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+            return responseEntity;
+        }
+        
+
+        try {
+            intern.setId(id);
+            Intern internSaved = internService.save(intern);
+            String message = "Intern has been successfully updated ";
+            responseAsMap.put("message", message);
+            responseAsMap.put("intern", internSaved);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.CREATED);
+        } catch (DataAccessException e) {
+            String errorMessage = "The intern could not be updated and the most likely cause is: "
+                                 + e.getMostSpecificCause();
+            responseAsMap.put("several error", errorMessage);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+        return responseEntity;
+    }
+
+
+
+         
+        
+        
+
+      
 
 
 }
