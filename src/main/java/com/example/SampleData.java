@@ -29,7 +29,6 @@ public class SampleData {
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
-
                 
         internService.save(
             Intern.builder()
