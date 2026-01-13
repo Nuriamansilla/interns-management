@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Intern implements Serializable {
 
-      private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
@@ -54,7 +54,6 @@ public class Intern implements Serializable {
     //@NotEmpty(message = "The intern's global ID cannot be empty")
     private Long globalID;
 
-
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -62,14 +61,14 @@ public class Intern implements Serializable {
     @Enumerated(EnumType.STRING)
     private Center center;
 
-   // @OneToOne
+    // @OneToOne
     private AcademicInformation academicInformation;
     
-   // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-   //  @JsonIgnore
+    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+    // @JsonIgnore
     private Language language;
 
-   // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-   // @JsonIgnore
+    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+    // @JsonIgnore
     private HRfeedback hrfeedback;
 }

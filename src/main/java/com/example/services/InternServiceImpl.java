@@ -21,37 +21,31 @@ public class InternServiceImpl implements InternService{
 
     @Override
     public Page<Intern> findAll(Pageable pageable) {
-        
         return internDao.findAll(pageable);
     }
 
     @Override
     public List<Intern> findAll(Sort sort) {
-        
         return internDao.findAll(sort);
     }
 
     @Override
     public Intern findById(int id) {
-        
         return internDao.findById(id).get();
     }
 
     @Override
     public Intern save(Intern intern) {
-        
         return internDao.save(intern);
     }
 
     @Override
     public void delete(Intern intern) {
-        
         internDao.delete(intern);
     }
 
     @Override
     public List<Intern> findAll() {
-        
         return internDao.findAll();
     }
 }

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +39,13 @@ public class InternController {
 
     private final InternService internService; 
 
+    // READ
 
- @GetMapping
+    @GetMapping
     public ResponseEntity<List<Intern>> getInterns( 
         @RequestParam (name = "page", required = false) Integer page,
         @RequestParam(name = "size", required = false) Integer size) {
+
             List<Intern> interns = null; 
             Sort sort = Sort.by("name");
 
@@ -58,11 +61,12 @@ public class InternController {
     }
 
 
+    // FIND BY ID
     
     @GetMapping("/{id}")
-     public ResponseEntity<Map<String, Object>> findInternById(
+    public ResponseEntity<Map<String, Object>> findInternById(
         @PathVariable(name = "id", required = true) int id) {
-        
+
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
@@ -82,20 +86,18 @@ public class InternController {
            String errorMessage = "Error grave y la causa mas probable es: " + e.getMostSpecificCause().getMessage();
             responseAsMap.put("mensaje", errorMessage); 
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
 
         return responseEntity; 
-     }
+     }   
 
     
-// SAVE
+    // SAVE
 
-@PostMapping
-@Transactional
+    @PostMapping
+    @Transactional
     public  ResponseEntity<Map<String, Object>> saveIntern(@Valid @RequestBody Intern intern,
-        BindingResult results 
-    ){
+        BindingResult results) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
@@ -103,7 +105,7 @@ public class InternController {
         // Comprobar si el producto recibido en el cuerpo de la petición tiene errores
 
         if (results.hasErrors()) {
-            
+                
             //Recuperar todos los errores que tiene el producto recibido en formato JSON
             List<ObjectError> objectErrors = results.getAllErrors();
 
@@ -137,18 +139,19 @@ public class InternController {
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.CREATED);
         } catch (DataAccessException e) {
             String errorMessage = "The intern could not be created and the most likely cause is: "
-                                 + e.getMostSpecificCause();
+                                + e.getMostSpecificCause();
             responseAsMap.put("several error", errorMessage);
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-
         }
+
         return responseEntity;
     }
 
-// UPDATE
 
-@PutMapping("/{id}")
-@Transactional
+    // UPDATE
+
+    @PutMapping("/{id}")
+    @Transactional
     public  ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
         BindingResult results, @PathVariable(name = "id", required = true) Integer id ){
 
@@ -186,16 +189,33 @@ public class InternController {
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
+
         return responseEntity;
     }
 
 
-
-         
+    // DELETE    
         
-        
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> deleteIntern(@PathVariable(name="id", required=true) int id) {
+       
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        var responseAsMap = new HashMap<String, Object>();
+ 
+        try {
+            internService.delete(internService.findById(id));
+            String successMessage = "The intern with id " + id + " has been deleted.";
+            responseAsMap.put("message", successMessage);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            String errorMessage = "The product with id " + id + " could not be deleted, the most likely cause of the error is:"
+                                  + e.getMostSpecificCause();
+            responseAsMap.put("message", errorMessage);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+ 
+        return responseEntity;
+    }
 
-      
-
-   
 }
