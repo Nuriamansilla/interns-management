@@ -8,9 +8,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -50,8 +52,8 @@ public class Intern implements Serializable {
     @DateTimeFormat(pattern = "DD/MM/YYYY")
     private LocalDate dateOfBirth; 
 
-    //@NotNull(message = "The intern's global ID  is required and cannot be null")
-    //@NotEmpty(message = "The intern's global ID cannot be empty")
+   // @NotNull(message = "The intern's global ID  is required and cannot be null")
+   // @NotEmpty(message = "The intern's global ID cannot be empty")
     private Long globalID;
 
 
@@ -62,7 +64,7 @@ public class Intern implements Serializable {
     @Enumerated(EnumType.STRING)
     private Center center;
 
-   // @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private AcademicInformation academicInformation;
     
    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
