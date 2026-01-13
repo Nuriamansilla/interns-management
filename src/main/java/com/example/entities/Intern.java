@@ -50,8 +50,8 @@ public class Intern implements Serializable {
     @DateTimeFormat(pattern = "DD/MM/YYYY")
     private LocalDate dateOfBirth; 
 
-    //@NotNull(message = "The intern's global ID  is required and cannot be null")
-    //@NotEmpty(message = "The intern's global ID cannot be empty")
+   // @NotNull(message = "The intern's global ID  is required and cannot be null")
+   // @NotEmpty(message = "The intern's global ID cannot be empty")
     private Long globalID;
 
     @Enumerated(EnumType.STRING)
