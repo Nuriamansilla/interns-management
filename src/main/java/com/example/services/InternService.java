@@ -10,7 +10,6 @@ import com.example.entities.Intern;
 
 public interface InternService {
 
-
     Page<Intern> findAll(Pageable pageable);
     List<Intern> findAll(Sort sort);
     Intern findById(int id);
