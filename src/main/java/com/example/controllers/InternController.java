@@ -61,30 +61,30 @@ public class InternController {
     }
 
 
-    // FIND BY ID
+    // FIND BY GLOBAL ID
     
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> findInternById(
-        @PathVariable(name = "id", required = true) int id) {
+    @GetMapping("/{globalID}")
+    public ResponseEntity<Map<String, Object>> findInternByGlobalID(
+        @PathVariable(name = "globalID", required = true) long globalID) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
-            Intern intern = internService.findById(id);
+            Intern intern = internService.findByGlobalID(globalID);
             if (intern !=null) {
-                String successMessage = "Se ha encontrado el intern con id" + id;
-                responseAsMap.put("mensaje", successMessage);
+                String successMessage = "Intern with global ID " + globalID + " has been found";
+                responseAsMap.put("message", successMessage);
                 responseAsMap.put("intern", intern);
                 responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
             } else {
-                 String notFoundMessage = "El intern con id" + id + ", no ha sido encontrado"; 
+                 String notFoundMessage = "Intern with global ID " + globalID + " has not been found"; 
                 responseAsMap.put("notFoundMessage", notFoundMessage);
                 responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
             }
         } catch (DataAccessException e) {
-           String errorMessage = "Error grave y la causa mas probable es: " + e.getMostSpecificCause().getMessage();
-            responseAsMap.put("mensaje", errorMessage); 
+           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage); 
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -133,7 +133,7 @@ public class InternController {
 
         try {
             Intern internSaved = internService.save(intern);
-            String message = "Intern has been created successfully ";
+            String message = "Intern has been successfully created";
             responseAsMap.put("mensaje", message);
             responseAsMap.put("intern", internSaved);
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.CREATED);
@@ -150,10 +150,10 @@ public class InternController {
 
     // UPDATE
 
-    @PutMapping("/{id}")
+    @PutMapping("/{globalID}")
     @Transactional
     public  ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
-        BindingResult results, @PathVariable(name = "id", required = true) Integer id ){
+        BindingResult results, @PathVariable(name = "globalID", required = true) Long globalID ){
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
@@ -176,9 +176,9 @@ public class InternController {
         
 
         try {
-            intern.setId(id);
+            intern.setGlobalID(globalID);
             Intern internSaved = internService.save(intern);
-            String message = "Intern has been successfully updated ";
+            String message = "Intern has been successfully updated";
             responseAsMap.put("message", message);
             responseAsMap.put("intern", internSaved);
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.CREATED);
@@ -196,20 +196,20 @@ public class InternController {
 
     // DELETE    
         
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{globalID}")
     @Transactional
-    public ResponseEntity<Map<String, Object>> deleteIntern(@PathVariable(name="id", required=true) int id) {
+    public ResponseEntity<Map<String, Object>> deleteIntern(@PathVariable(name="globalID", required=true) long globalID) {
        
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
  
         try {
-            internService.delete(internService.findById(id));
-            String successMessage = "The intern with id " + id + " has been deleted.";
+            internService.delete(internService.findByGlobalID(globalID));
+            String successMessage = "The intern with global ID " + globalID + " has been deleted.";
             responseAsMap.put("message", successMessage);
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
         } catch (DataAccessException e) {
-            String errorMessage = "The product with id " + id + " could not be deleted, the most likely cause of the error is:"
+            String errorMessage = "The intern with global ID " + globalID + " could not be deleted, the most likely cause of the error is:"
                                   + e.getMostSpecificCause();
             responseAsMap.put("message", errorMessage);
             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);

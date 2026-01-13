@@ -16,4 +16,5 @@ public interface InternService {
     Intern save(Intern intern);
     void delete(Intern intern);
     List<Intern> findAll();
+    Intern findByGlobalID(long globalID);
 }
