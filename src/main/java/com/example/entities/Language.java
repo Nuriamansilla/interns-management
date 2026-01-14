@@ -1,6 +1,7 @@
 package com.example.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

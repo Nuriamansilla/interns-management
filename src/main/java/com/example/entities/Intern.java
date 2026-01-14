@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +18,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +56,7 @@ public class Intern implements Serializable {
     //@NotNull(message = "The intern's global ID  is required and cannot be null")
     private Long globalID;
 
+    @NotNull(message = "The intern's gender is required")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -58,15 +64,16 @@ public class Intern implements Serializable {
     @Enumerated(EnumType.STRING)
     private Center center;
 
-    // @OneToOne
+    @NotNull(message = "The intern's academic information is required")
+    @OneToOne(fetch = FetchType.LAZY)
     private AcademicInformation academicInformation;
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "intern")
     // @JsonIgnore
     private List<Language> languages;
 
-    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-    // @JsonIgnore
-    private HRfeedback hrfeedback;
+   //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+   //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private List<HRfeedback> hrfeedbacks;
     
 }

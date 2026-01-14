@@ -26,4 +26,7 @@ public class HRfeedback implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+
+    
 }
