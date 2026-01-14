@@ -1,12 +1,16 @@
 package com.example;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.entities.AcademicInformation;
 import com.example.entities.Center;
+import com.example.entities.EducationCenter;
+import com.example.entities.EducationLevel;
 import com.example.entities.Gender;
 import com.example.entities.Intern;
 import com.example.services.InternService;
@@ -15,7 +19,9 @@ import com.example.services.InternService;
 public class SampleData {
 
     @Bean
-    public CommandLineRunner samplesData(InternService internService) {
+    public CommandLineRunner samplesData(InternService internService, 
+            AcademicInformationService academicInformationService,
+            Languageservice languageService) {
 
         return args -> {
     
@@ -50,8 +56,7 @@ public class SampleData {
                 .globalID(112233445L)
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
-                .build()
-        );
+                .build());
 
         internService.save(
             Intern.builder()
@@ -63,6 +68,31 @@ public class SampleData {
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
+
+
+        // Academic information
+
+        academicInformationService.save(AcademicInformation.builder()             
+                                         .educationLevel(EducationLevel.DEGREE)
+                                         .title("")
+                                         .startDate(LocalDate.of(2020, Month.JANUARY, 0))
+                                         .endDate(LocalDate.of(2024, Month.JUNE, 0))
+                                         .educationCenter(EducationCenter.UNIVERSITY)
+                                         .universityOrIES("")
+                                         .intern(internService.findById(1))
+                                         .build());
+
+        // Languages
+
+        languageService.save(languageService.builder()             
+                                         .languageEnum
+                                         .langLevel
+                                         .intern(internService.findById(1))
+                                         .build());
+
+
+
+
 
         };
     }
