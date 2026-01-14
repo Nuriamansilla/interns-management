@@ -1,6 +1,7 @@
 package com.example.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,5 +27,6 @@ public class Language implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private int id;
+
 
 }

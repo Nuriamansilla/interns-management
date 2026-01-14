@@ -2,15 +2,23 @@ package com.example.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -50,10 +58,10 @@ public class Intern implements Serializable {
     @DateTimeFormat(pattern = "DD/MM/YYYY")
     private LocalDate dateOfBirth; 
 
-   // @NotNull(message = "The intern's global ID  is required and cannot be null")
-   // @NotEmpty(message = "The intern's global ID cannot be empty")
+    @NotNull(message = "The intern's global ID  is required")
     private Long globalID;
 
+    @NotNull(message = "The intern's gender is required")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -61,15 +69,16 @@ public class Intern implements Serializable {
     @Enumerated(EnumType.STRING)
     private Center center;
 
-    // @OneToOne
+    @NotNull(message = "The intern's academic information is required")
+    @OneToOne(fetch = FetchType.LAZY)
     private AcademicInformation academicInformation;
     
-    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-    // @JsonIgnore
-    private Language language;
+   // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+  //  @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private List<Language> languages;
 
-    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
-    // @JsonIgnore
-    private HRfeedback hrfeedback;
+   //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+   //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private List<HRfeedback> hrfeedbacks;
     
 }
