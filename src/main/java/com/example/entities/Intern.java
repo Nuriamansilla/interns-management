@@ -69,8 +69,4 @@ public class Intern implements Serializable {
     // @JsonIgnore
     private HRfeedback hrfeedback;
 
-    public void setId(Long globalID2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
-    }
 }
