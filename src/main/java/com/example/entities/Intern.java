@@ -71,9 +71,5 @@ public class Intern implements Serializable {
     // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
     // @JsonIgnore
     private HRfeedback hrfeedback;
-
-    public void setId(Long globalID2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
-    }
+    
 }
