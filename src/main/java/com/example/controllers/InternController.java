@@ -220,7 +220,7 @@ public class InternController {
 
 
 
-    //Busqueda por nombre y apellido metodos 
+    //Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
 
      @GetMapping(path = "/interns-by-name")
     public ResponseEntity<Map<String, Object>> findInternByName(
@@ -250,7 +250,7 @@ public class InternController {
         return responseEntity; 
      }   
 
-
+     //Busqueda por primer apellido 
      
      @GetMapping(path = "/interns-by-surname")
     public ResponseEntity<Map<String, Object>> findInternBySurname1(
