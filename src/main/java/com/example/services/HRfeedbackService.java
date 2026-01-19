@@ -6,7 +6,7 @@ import com.example.entities.HRfeedback;
 
 public interface HRfeedbackService {
     List<HRfeedback> findAll();
-    HRfeedback findHRfeedbackById(int id);
-    HRfeedback saveHRfeedback(HRfeedback hRfeedback);
+    HRfeedback findById(int id);
+    HRfeedback save(HRfeedback hRfeedback);
 
 }

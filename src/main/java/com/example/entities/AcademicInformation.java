@@ -5,11 +5,17 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -35,6 +41,7 @@ public class AcademicInformation implements Serializable{
     private int id;
 
     @NotNull(message = "The education level is required")
+    @Enumerated(EnumType.STRING)
     private EducationLevel educationLevel;
 
     @NotNull(message = "The title is required and cannot be null")
@@ -43,19 +50,23 @@ public class AcademicInformation implements Serializable{
 
     @NotNull(message = "The start date is required")
     @Past(message = "The start date must be earlier than today")
-    @DateTimeFormat(pattern = "DD/MM/YYYY")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
-    @DateTimeFormat(pattern = "DD/MM/YYYY")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @NotNull(message = "The education center is required")
+    @Enumerated(EnumType.STRING)
     private EducationCenter educationCenter;
 
     @NotNull(message = "The education center name is required and cannot be null")
     @NotEmpty(message = "The education center name cannot be empty")
     private String universityOrIES;
  
-    @OneToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "intern_id", nullable = false)
+    @JsonIgnore
     private Intern intern;
 }

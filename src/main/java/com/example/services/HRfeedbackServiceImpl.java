@@ -21,12 +21,12 @@ public class HRfeedbackServiceImpl implements HRfeedbackService {
     }
 
     @Override
-    public HRfeedback findHRfeedbackById(int id) {
+    public HRfeedback findById(int id) {
        return hRfeedbackDao.findById(id).get();
     }
 
     @Override
-    public HRfeedback saveHRfeedback(HRfeedback hRfeedback) {
+    public HRfeedback save(HRfeedback hRfeedback) {
         return hRfeedbackDao.save(hRfeedback);
     }
 

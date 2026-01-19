@@ -21,12 +21,12 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public Language saveLanguage(Language language) {
+    public Language save(Language language) {
         return languageDao.save(language);
     }
 
     @Override
-    public Language findByIdLanguage(int id) {
+    public Language findById(int id) {
         return languageDao.findById(id).get();
     }
     

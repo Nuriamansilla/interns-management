@@ -6,7 +6,7 @@ import com.example.entities.Language;
 
 public interface LanguageService {
     List<Language> findAll();
-    Language saveLanguage(Language language);
-    Language findByIdLanguage(int id); 
+    Language save(Language language);
+    Language findById(int id); 
 
 }
