@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.example.dtos.InternResponse;
 import com.example.entities.Intern;
 
 public interface InternService {
@@ -17,5 +18,5 @@ public interface InternService {
     void delete(Intern intern);
     List<Intern> findAll();
     Intern findByGlobalID(long globalID);
-    InternDto getInternById(Long id);
+    InternResponse getInternById(Integer id);
 }

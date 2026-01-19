@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.InternDao;
+import com.example.dtos.InternResponse;
+import com.example.entities.AcademicInformation;
 import com.example.entities.Intern;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class InternServiceImpl implements InternService{
 
 
     private final InternDao internDao;
-
+    private final AcademicInformationService academicInformationService;
     private final InternMapper internMapper;
 
     @Override
@@ -57,11 +59,15 @@ public class InternServiceImpl implements InternService{
     }
 
     @Override
-    public InternDto getInternById(Long id) {
+    public InternResponse getInternById(Integer id) {
 
-        InternDto internDto = null;
+        InternResponse internResponse = null;
 
-        Intern intern = internDao.findByGlobalID(id).orElseThrow
-        return internDto
+        Intern intern = internDao.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Intern not found"));
+        AcademicInformation academicInformation = academicInformationService.getAcademicInformationById(id);
+
+        internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
+        return internResponse;
     }
 }

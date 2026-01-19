@@ -9,6 +9,7 @@ public interface AcademicInformationService {
     List<AcademicInformation> findAllAcademicInformations();
     AcademicInformation findAcademicInformationById(int id);
     AcademicInformation saveAcademicInformation(AcademicInformation academicInformation);
+    AcademicInformation getAcademicInformationById(int id);
    
 
 
