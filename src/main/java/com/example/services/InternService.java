@@ -17,4 +17,6 @@ public interface InternService {
     void delete(Intern intern);
     List<Intern> findAll();
     Intern findByGlobalID(long globalID);
+    Intern findByName(String name);
+    Intern findBySurname1(String surname1);
 }
