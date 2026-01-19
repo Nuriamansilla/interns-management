@@ -19,4 +19,6 @@ public interface InternService {
     List<Intern> findAll();
     Intern findByGlobalID(long globalID);
     InternResponse getInternById(Integer id);
+    Intern findByName(String name);
+    Intern findBySurname1(String surname1);
 }

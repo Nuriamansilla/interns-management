@@ -14,9 +14,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +37,8 @@ public class AcademicInformation implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    // VALIDACIONES Y RELACIONES CORRECTAS: NO MODIFICAR
 
     @NotNull(message = "The education level is required")
     @Enumerated(EnumType.STRING)
@@ -63,10 +63,9 @@ public class AcademicInformation implements Serializable{
     @NotNull(message = "The education center name is required and cannot be null")
     @NotEmpty(message = "The education center name cannot be empty")
     private String universityOrIES;
- 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    @OneToOne
-    @JoinColumn(name = "intern_id", nullable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Intern intern;
+    
 }
