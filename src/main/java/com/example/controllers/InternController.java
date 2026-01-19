@@ -250,7 +250,7 @@ public class InternController {
         return responseEntity; 
      }   
 
-     //Busqueda por primer apellido 
+     //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
      
      @GetMapping(path = "/interns-by-surname")
     public ResponseEntity<Map<String, Object>> findInternBySurname1(
