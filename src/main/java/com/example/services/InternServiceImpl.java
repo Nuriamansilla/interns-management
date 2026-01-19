@@ -19,6 +19,8 @@ public class InternServiceImpl implements InternService{
 
     private final InternDao internDao;
 
+    private final InternMapper internMapper;
+
     @Override
     public Page<Intern> findAll(Pageable pageable) {
         return internDao.findAll(pageable);
@@ -52,5 +54,14 @@ public class InternServiceImpl implements InternService{
     @Override
     public Intern findByGlobalID(long globalID) {
         return internDao.findByGlobalID(globalID);
+    }
+
+    @Override
+    public InternDto getInternById(Long id) {
+
+        InternDto internDto = null;
+
+        Intern intern = internDao.findByGlobalID(id).orElseThrow
+        return internDto
     }
 }
