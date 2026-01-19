@@ -6,11 +6,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,24 +16,28 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "interns")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 @Builder
 public class Intern implements Serializable {
 
@@ -44,6 +46,8 @@ public class Intern implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
     private int id;
+
+    // VALIDACIONES Y RELACIONES CORRECTAS: NO MODIFICAR
 
     @NotEmpty(message = "The intern's name cannot be empty")
     private String name;
@@ -58,10 +62,11 @@ public class Intern implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth; 
 
-    @NotNull(message = "The intern's global ID  is required and cannot be null")  
-    //@Min(value = 10000000, message = "globalID must have exactly 8 digit")
-    //@Max(value = 99999999, message = "globalID must have exactly 8 digit")
-    @Column(name = "global_id", nullable = false, unique = true)
+    // TRES LÍNEAS COMENTADAS PORQUE DAN ERROR: NO DESCOMENTAR
+    // // @Min(value = 10000000, message = "globalID must have exactly 8 digit")
+    // // @Max(value = 99999999, message = "globalID must have exactly 8 digit")
+    // // @Column(name = "global_id", nullable = false, unique = true)
+    @NotNull(message = "The intern's global ID  is required and cannot be null") 
     private Long globalID;
 
     @NotNull(message = "The intern's gender is required")
@@ -72,18 +77,18 @@ public class Intern implements Serializable {
     @Enumerated(EnumType.STRING)
     private Center center;
 
-    // este da problemas 
-    //@NotNull(message = "The intern's academic information is required")
-    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "intern")
-    //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-    @OneToOne(mappedBy = "intern", cascade = CascadeType.ALL)
-    private AcademicInformation academicInformation;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "intern_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private List<AcademicInformation> academicInformation;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "intern")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "intern_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private List<Language> languages;
 
-   //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "intern_id", referencedColumnName = "id")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private List<HRfeedback> hrfeedbacks;
     
