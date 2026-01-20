@@ -83,7 +83,7 @@ public class Intern implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private List<Language> languages;
 
-   //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "intern")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "intern")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private List<HRfeedback> hrfeedbacks;
     
