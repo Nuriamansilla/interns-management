@@ -17,8 +17,7 @@ public interface InternService {
     Intern save(Intern intern);
     void delete(Intern intern);
     List<Intern> findAll();
-    Intern findByGlobalID(long globalID);
-    InternResponse getInternById(Integer id);
+    InternResponse findByGlobalID(long globalID);
     Intern findByName(String name);
     Intern findBySurname1(String surname1);
 }

@@ -54,8 +54,18 @@ public class InternServiceImpl implements InternService{
     }
 
     @Override
-    public Intern findByGlobalID(long globalID) {
-        return internDao.findByGlobalID(globalID);
+    public InternResponse findByGlobalID(long globalID) {
+
+        InternResponse internResponse = null;
+
+        Intern intern = internDao.findByGlobalID(globalID);
+
+        AcademicInformation academicInformation = academicInformationService
+                            .getAcademicInformationById(intern.getId());
+
+        internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
+        return internResponse;
+
     }
    
      @Override    
@@ -68,17 +78,17 @@ public class InternServiceImpl implements InternService{
        return internDao.findBySurname1(surname1);
     }
 
-     public InternResponse getInternById(Integer id) {
+     public InternResponse getInternByGlobalId(Long globalID) {
 
         InternResponse internResponse = null;
 
-        Intern intern = internDao.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Intern not found"));
+        Intern intern = internDao.findByGlobalID(globalID);
 
         AcademicInformation academicInformation = academicInformationService
-                            .getAcademicInformationById(id);
+                            .getAcademicInformationById(intern.getId());
 
         internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
         return internResponse;
+     
      }
 }

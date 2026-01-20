@@ -7,11 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.example.entities.Intern;
 import java.util.List;
 
-
-
-
-
-
 @Repository
 public interface InternDao extends JpaRepository<Intern, Integer>{
 

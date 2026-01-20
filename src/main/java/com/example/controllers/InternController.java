@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dtos.InternResponse;
 import com.example.entities.Intern;
 import com.example.services.InternService;
 
@@ -71,7 +72,7 @@ public class InternController {
         var responseAsMap = new HashMap<String, Object>();
 
         try {
-            Intern intern = internService.findByGlobalID(globalID);
+            InternResponse intern = internService.findByGlobalID(globalID);
             if (intern !=null) {
                 String successMessage = "Intern with global ID " + globalID + " has been found";
                 responseAsMap.put("message", successMessage);
@@ -192,7 +193,6 @@ public class InternController {
 
         return responseEntity;
     }
-
 
     // DELETE    
         
