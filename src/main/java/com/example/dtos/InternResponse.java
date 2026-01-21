@@ -15,6 +15,6 @@ public record InternResponse(
 
      // campos para mapear la entidad academic information , a continuacion 
 
-     String title
+     String title 
 
 ) {}

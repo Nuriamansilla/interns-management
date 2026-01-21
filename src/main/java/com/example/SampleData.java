@@ -95,7 +95,7 @@ public class SampleData {
                                   .endDate(LocalDate.of(2024, Month.JUNE, 6))
                                   .educationCenter(EducationCenter.IES)
                                   .universityOrIES("Junito")
-                                  .intern(internService.findById(2))
+                                  .intern(internService.findById(1))
                                   .build());
 
         academicInformationService.saveAcademicInformation(AcademicInformation.builder()             

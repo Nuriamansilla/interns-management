@@ -13,11 +13,15 @@ public interface InternService {
 
     Page<Intern> findAll(Pageable pageable);
     List<Intern> findAll(Sort sort);
+    List<Intern> findAll();
+
     Intern findById(int id);
     Intern save(Intern intern);
     void delete(Intern intern);
-    List<Intern> findAll();
-    InternResponse findByGlobalID(long globalID);
-    Intern findByName(String name);
-    Intern findBySurname1(String surname1);
+    Intern findByGlobalID(long globalID);
+
+    InternResponse getInternByGlobalId(Long globalID);
+    InternResponse findByName(String name);
+    InternResponse findBySurname1(String surname1);
+    
 }

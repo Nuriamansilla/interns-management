@@ -1,11 +1,12 @@
 package com.example.dao;
 
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.entities.Intern;
-import java.util.List;
 
 @Repository
 public interface InternDao extends JpaRepository<Intern, Integer>{
@@ -14,4 +15,5 @@ public interface InternDao extends JpaRepository<Intern, Integer>{
     Intern findByName(String name);
     Intern findBySurname1(String surname1);
 
+    Optional<Intern> findOptionalByGlobalID(Long globalID);
 }

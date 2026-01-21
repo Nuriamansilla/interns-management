@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.dao.AcademicInformationDao;
 import com.example.entities.AcademicInformation;
+import com.example.entities.Intern;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +34,11 @@ public class AcademicInformationServiceImpl implements AcademicInformationServic
     @Override
     public AcademicInformation getAcademicInformationById(int id) {
         return academicInformationDao.findById(id).get();
+    }
+
+    @Override
+    public List<AcademicInformation> findByIntern(Intern intern) {
+        return academicInformationDao.findByIntern(intern);
     }
 
 }
