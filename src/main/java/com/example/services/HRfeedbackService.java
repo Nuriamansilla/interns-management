@@ -18,6 +18,8 @@ public interface HRfeedbackService {
     Page<HRfeedback> findAll(Pageable pageable);
     List<HRfeedback> findAll(Sort sort);
 
-    List<HRfeedback> findByGlobalIDWithOrden(Long globalID);
+
+    
+
 
 }

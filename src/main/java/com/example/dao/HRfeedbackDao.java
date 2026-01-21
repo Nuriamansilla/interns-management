@@ -10,5 +10,7 @@ import com.example.entities.HRfeedback;
 @Repository
 public interface HRfeedbackDao extends JpaRepository<HRfeedback, Integer>{
 
-    List<HRfeedback> findByGlobalIDWithOrden(Long globalID);
+    
+
+    
 }

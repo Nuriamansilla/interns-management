@@ -12,5 +12,6 @@ import com.example.entities.Intern;
 public interface InternDao extends JpaRepository<Intern, Integer>{
 
     Intern findByGlobalID(Long globalID);
+    boolean existsByGlobalID(Long globalID);
 
-}
+}  

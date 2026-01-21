@@ -53,4 +53,10 @@ public class InternServiceImpl implements InternService{
     public Intern findByGlobalID(long globalID) {
         return internDao.findByGlobalID(globalID);
     }
+
+    @Override
+    public boolean existsByGlobalID(Long globalID) {
+        
+        return internDao.existsByGlobalID(globalID);
+    }
 }

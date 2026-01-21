@@ -17,4 +17,5 @@ public interface InternService {
     void delete(Intern intern);
     List<Intern> findAll();
     Intern findByGlobalID(long globalID);
+    boolean existsByGlobalID(Long globalID);
 }
