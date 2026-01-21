@@ -61,8 +61,8 @@ public class HRController {
 }
 
 
-      // ============ Añadir UN feedback ============
-      // POST /interns/{globalId}/feedbacks  -> añade UN feedback por llamada
+    // ============ Añadir UN feedback ============
+    // POST /interns/{globalId}/feedbacks  -> añade UN feedback por llamada
     // Body esperado: { "name": "...", "date": "DD/MM/YYYY", "hrUser": "...", "comments": "..." }
 
     @PostMapping("/{globalId}/hRfeedbacks")
@@ -140,7 +140,7 @@ public class HRController {
         //******************************************************************
         // ===================== US 2.1 – HR profile =====================
                 // Muestra SOLO lo que pide la user story (y feedbacks)
-        // GET   http://localhost:8080/interns/556677889/hr-profile *************
+        // GET   http://localhost:8080/interns/556677889/hr-profile ********* donde globalID es 55667799 *****
         // *********************************************+++*******************   
 
    
