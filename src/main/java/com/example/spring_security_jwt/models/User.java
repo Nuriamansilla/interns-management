@@ -24,20 +24,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users",
     uniqueConstraints = {
-        // Estas restricciones impiden que se cree un usuario repetido:
-           // @UniqueConstraint(columnNames = "username"),
-           // @UniqueConstraint(columnNames = "email"),
-        // Se puede hacer también con un array:
-        @UniqueConstraint(columnNames = {"username", "email"})
-    }
-)
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+    })
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
 public class User {
 
-    // Propiedades
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,13 +50,10 @@ public class User {
     @Size(max = 120)
     private String password;
 
-    // Roles
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_roles", 
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    @Builder.Default
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default        
     private Set<Role> roles = new HashSet<>();
-
 }

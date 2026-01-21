@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /* Como el username y el email son unique (no se pueden repetir), antes de dar de alta
        a un usuario hay que preguntar si el usuario existe o no. */
     Optional<User> findByUsername(String username);
-    boolean existsByUsername(String username);
-    boolean existsByEmail(String email);
+    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 }
