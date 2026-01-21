@@ -48,6 +48,11 @@ public class HRfeedbackServiceImpl implements HRfeedbackService {
         return hRfeedbackDao.findAll(sort);
     }
 
+    @Override
+    public List<HRfeedback> findAllByInternGlobalIdOrdered(Long globalId) {
+        return hRfeedbackDao.findAllByInternGlobalIdOrdered(globalId);
+    }
+
 
     
    

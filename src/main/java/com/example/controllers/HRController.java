@@ -3,13 +3,16 @@ package com.example.controllers;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +33,13 @@ public class HRController {
 
    private final HRfeedbackService hRfeedbackService;
    private final InternService internService;
-   
+    
+   // ******************************************************
+   // ADD A FEEDBACK
+   // ******************************************************
+   // ******************************************************
+   // POST http://localhost:8080/interns/556677889/hRfeedbacks donde globalID es 55667799 *****
+
    private static final DateTimeFormatter ISO_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
    
    
@@ -126,6 +135,67 @@ public class HRController {
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     
-
 }
+
+        //******************************************************************
+        // ===================== US 2.1 – HR profile =====================
+                // Muestra SOLO lo que pide la user story (y feedbacks)
+        // GET   http://localhost:8080/interns/556677889/hr-profile *************
+        // *********************************************+++*******************   
+
+   
+@GetMapping("/{globalId}/hr-profile")
+    public ResponseEntity<Map<String, Object>> getHrProfile(
+            @PathVariable("globalId") Long globalId) {
+
+        var map = new HashMap<String, Object>();
+
+        
+try {
+            // 1) Verificar intern por globalID
+            Intern intern = internService.findByGlobalID(globalId);
+            if (intern == null) {
+                return new ResponseEntity<>(
+                        errorBody("El intern con globalId " + globalId + " no se ha encontrado"),
+                        HttpStatus.NOT_FOUND
+                );
+            }
+
+            // 2) Cargar feedbacks ordenados desc por fecha
+            List<HRfeedback> hRfeedbacks = hRfeedbackService.findAllByInternGlobalIdOrdered(globalId);
+
+            // 3) Construir el "profile" mínimo que pide la US
+            Map<String, Object> profile = new LinkedHashMap<>();
+            profile.put("name", intern.getName());
+            profile.put("surname1", intern.getSurname1());
+            profile.put("surname2", intern.getSurname2());
+            profile.put("globalID", intern.getGlobalID());     // respeta tu casing
+            profile.put("gender", intern.getGender().name());
+            profile.put("center", intern.getCenter().name());
+
+            // Mapear feedbacks -> List<Map<String,Object>>
+            List<Map<String, Object>> fbList = new ArrayList<>();
+            for (HRfeedback f : hRfeedbacks) {
+                Map<String, Object> fMap = new LinkedHashMap<>();
+                fMap.put("id", f.getId());
+                fMap.put("nameFeedback", f.getNameFeedback());
+                fMap.put("dateOfFeedBack", f.getDateOfFeedBack().format(ISO_DATE));
+                fMap.put("hrUser", f.getHrUser());
+                fMap.put("comments", f.getComments());
+                fbList.add(fMap);
+            }
+            profile.put("hRfeedbacks", fbList);
+
+            // 4) Tu patrón de respuesta
+            map.put("message", "Perfil HR del intern " + globalId);
+            map.put("profile", profile);
+            return ResponseEntity.ok(map);
+
+        } catch (DataAccessException e) {
+            map.put("message", "Error grave y la causa más probable es: " + e.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
