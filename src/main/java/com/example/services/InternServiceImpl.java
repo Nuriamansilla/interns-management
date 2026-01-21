@@ -63,4 +63,9 @@ public class InternServiceImpl implements InternService{
     public Intern findBySurname1(String surname1) {
        return internDao.findBySurname1(surname1);
     }
+
+    @Override
+    public List<Intern> searchInterns(String query) {
+        return internDao.searchInterns(query);
+    }
 }
