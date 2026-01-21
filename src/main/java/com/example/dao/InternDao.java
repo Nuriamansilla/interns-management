@@ -18,5 +18,6 @@ public interface InternDao extends JpaRepository<Intern, Integer>{
     Intern findByGlobalID(Long globalID);
     Intern findByName(String name);
     Intern findBySurname1(String surname1);
+    boolean existsByGlobalID(Long globalID);
 
-}
+}  

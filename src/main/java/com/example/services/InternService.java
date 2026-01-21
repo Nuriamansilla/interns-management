@@ -19,4 +19,5 @@ public interface InternService {
     Intern findByGlobalID(long globalID);
     Intern findByName(String name);
     Intern findBySurname1(String surname1);
+    boolean existsByGlobalID(Long globalID);
 }

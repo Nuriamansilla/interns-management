@@ -89,6 +89,7 @@ public class Intern implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "intern_id", referencedColumnName = "id")
+   // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "intern")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private List<HRfeedback> hrfeedbacks;
     
