@@ -50,7 +50,7 @@ public class SampleData {
                 .dateOfBirth(LocalDate.of(1995, Month.NOVEMBER, 21))
                 .globalID(987654321L)
                 .gender(Gender.WOMAN)
-                .center(Center.VALENCIA)
+                .center(Center.MURCIA)
                 .build());
 
         internService.save(

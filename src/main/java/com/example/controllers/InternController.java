@@ -281,4 +281,46 @@ public class InternController {
      }   
 
 
-}
+     //busqueda por lista US 1.5
+     // http://localhost:8080/interns/interns/search?query=MURCIA
+     //http://localhost:8080/interns/interns/search?query=Amel
+     //http://localhost:8080/interns/interns/search?query=Mansilla
+     //http://localhost:8080/interns/interns/search?query=987654321
+      @GetMapping("/interns/search")
+     public ResponseEntity<List<Intern>> searchInterns(@RequestParam String query) {
+        //      var responseAsMap = new HashMap<String, Object>();
+
+        //      try {
+        //     List<Intern> list = internService.searchInterns(query);
+
+        //     if (list !=null && !list.isEmpty()) {
+        //         responseAsMap.put("message", "Interns matching: " + query);
+        //         responseAsMap.put("internList", list);
+        //         return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+        //     } else {
+                
+        //         responseAsMap.put("notFoundMessage", "No interns found with: " + query);
+        //     return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);   
+        //     }
+        // } catch (DataAccessException e) {
+        //     responseAsMap.put("message", "Database error: " + e.getMostSpecificCause().getMessage());
+        //     return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR)
+        // }
+
+        List<Intern> list = internService.searchInterns(query);
+
+        if (list.isEmpty()) {
+            return ResponseEntity.notFound().build();
+            
+        }
+
+        return ResponseEntity.ok(list); 
+    }; 
+    
+
+
+
+     }
+
+
+
