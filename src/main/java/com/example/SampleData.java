@@ -37,7 +37,7 @@ public class SampleData {
                 .surname1("Mansilla")
                 .surname2("Lopez")
                 .dateOfBirth(LocalDate.of(1998, Month.NOVEMBER, 12))
-                .globalID(123456789L)
+                .globalID(12345678L)
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
@@ -48,7 +48,7 @@ public class SampleData {
                 .surname1("Magnaldi")
                 .surname2("Lago")
                 .dateOfBirth(LocalDate.of(1995, Month.NOVEMBER, 21))
-                .globalID(987654321L)
+                .globalID(98765432L)
                 .gender(Gender.WOMAN)
                 .center(Center.MURCIA)
                 .build());
@@ -59,7 +59,7 @@ public class SampleData {
                 .surname1("Belloumi")
                 .surname2("")
                 .dateOfBirth(LocalDate.of(1997, Month.NOVEMBER, 15))
-                .globalID(112233445L)
+                .globalID(11223344L)
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
@@ -70,7 +70,7 @@ public class SampleData {
                 .surname1("Belamria")
                 .surname2("Belahmal")
                 .dateOfBirth(LocalDate.of(1996, Month.NOVEMBER, 30))
-                .globalID(556677889L)
+                .globalID(55667788L)
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
