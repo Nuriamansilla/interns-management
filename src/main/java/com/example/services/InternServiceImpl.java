@@ -68,4 +68,9 @@ public class InternServiceImpl implements InternService{
         
         return internDao.existsByGlobalID(globalID);
     }
+
+    @Override
+    public List<Intern> searchInterns(String query) {
+        return internDao.searchInterns(query);
+    }
 }
