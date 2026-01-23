@@ -338,7 +338,7 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
 
     InternResponse internResponse = internService.findByName(name);
 
-    if (internResponse != null) {
+    if (internResponse == null) {
         return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(internResponse);
@@ -350,7 +350,7 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
 
         InternResponse internResponse = internService.findBySurname1(surname1);
 
-        if (internResponse != null) {
+        if (internResponse == null) {
             return ResponseEntity.notFound().build();
         }
 
