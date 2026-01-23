@@ -53,41 +53,83 @@ public class InternServiceImpl implements InternService{
         return internDao.findAll();
     }
 
-    @Override
-    public Intern findByGlobalID(long globalID) {
+ @Override
+     public Intern findByGlobalID(long globalID) {
         return internDao.findByGlobalID(globalID);
-    }
+     }
+
+     // DTO METHODS
+
+    
+    // public InternResponse findByName(String name) {
+    //     Intern intern = internDao.findByName(name);
+    //     AcademicInformation academicInformation =
+    //         academicInformationService.findByIntern(intern);
+
+    //     return internMapper.mapInternAndAcademicInformationToInternResponse(
+    //         intern, academicInformation
+    //     );
+    // }
+
+
+    // public InternResponse findBySurname1(String surname1) {
+
+    //     Intern intern = internDao.findBySurname1(null);
+
+    //     AcademicInformation academicInformation =
+    //         academicInformationService.findByIntern(intern);
+
+    //     InternResponse internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
+    //    return internResponse;
+    // }
+
+
+    //  public InternResponse getInternByGlobalId(Long globalID) {
+
+    //     Intern intern = internDao.findByGlobalID(globalID);
+
+    //     AcademicInformation academicInformation = academicInformationService
+    //                         .getAcademicInformationById(intern.getId());
+
+    //     InternResponse internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
+       
+    //     return internResponse;
+     
+    //  }
+
 
     @Override
-    public Intern findByName(String name) {
-        return internDao.findByName(name);
+    public InternResponse getInternByGlobalId(Long globalID) {
+    Intern intern = findByGlobalID(globalID);
+        return buildInternResponse(intern);
     }
 
-    @Override
-    public Intern findBySurname1(String surname1) {
-       return internDao.findBySurname1(surname1);
+    
+    public InternResponse findByName(String name) {
+        Intern intern = internDao.findByName(name);
+        return buildInternResponse(intern);
+    }
+
+    
+    public InternResponse findBySurname1(String surname1) {
+        Intern intern = internDao.findBySurname1(surname1);
+        return buildInternResponse(intern);
+    
     }
     
-    public boolean existsByGlobalID(Long globalID) {
-        
-        return internDao.existsByGlobalID(globalID);
+
+    private InternResponse buildInternResponse(Intern intern) {
+
+        AcademicInformation academicInformation =
+            academicInformationService.findByIntern(intern)
+                .stream()
+                .findFirst()
+                .orElse(null);
+
+        return internMapper.mapInternAndAcademicInformationToInternResponse(
+            intern, academicInformation);
+
     }
 
-    @Override
-    public List<Intern> searchInterns(String query) {
-        return internDao.searchInterns(query);
-    }
 
-    @Override
-    public InternResponse getInternById(Integer id) {
-
-        InternResponse internResponse = null;
-
-        Intern intern = internDao.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Intern not found"));
-        AcademicInformation academicInformation = academicInformationService.getAcademicInformationById(id);
-
-        internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
-        return internResponse;
-    }
 }
