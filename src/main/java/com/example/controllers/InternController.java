@@ -331,6 +331,9 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
     //     return responseEntity; 
     //  }  
 
+    
+ 
+     //Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
 
     @GetMapping(path = "/interns-by-name")
     public ResponseEntity<InternResponse> findInternByName(
@@ -345,6 +348,7 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
 
     }
 
+    //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
     @GetMapping(path = "/interns-by-surname")
     public ResponseEntity<InternResponse> findInternBySurname1(@RequestParam String surname1){
 
@@ -368,27 +372,10 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
      //http://localhost:8080/interns/interns/search?query=Mansilla
      //http://localhost:8080/interns/interns/search?query=987654321
       @GetMapping("/interns/search")
-     public ResponseEntity<List<Intern>> searchInterns(@RequestParam String query) {
-        //      var responseAsMap = new HashMap<String, Object>();
+     public ResponseEntity<List<InternResponse>> searchInterns(@RequestParam String query) {
 
-        //      try {
-        //     List<Intern> list = internService.searchInterns(query);
 
-        //     if (list !=null && !list.isEmpty()) {
-        //         responseAsMap.put("message", "Interns matching: " + query);
-        //         responseAsMap.put("internList", list);
-        //         return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
-        //     } else {
-                
-        //         responseAsMap.put("notFoundMessage", "No interns found with: " + query);
-        //     return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);   
-        //     }
-        // } catch (DataAccessException e) {
-        //     responseAsMap.put("message", "Database error: " + e.getMostSpecificCause().getMessage());
-        //     return new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR)
-        // }
-
-        List<Intern> list = internService.searchInterns(query);
+        List<InternResponse> list = internService.searchInterns(query);
 
         if (list.isEmpty()) {
             return ResponseEntity.notFound().build();

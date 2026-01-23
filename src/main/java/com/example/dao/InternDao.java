@@ -28,7 +28,6 @@ public interface InternDao extends JpaRepository<Intern, Integer>{
           OR LOWER(CAST(i.center AS string)) LIKE LOWER(CONCAT('%', :query, '%'))
        """)
 
-
         List<Intern> searchInterns(@Param("query") String query);
 
 

@@ -132,8 +132,11 @@ public class InternServiceImpl implements InternService{
     }
 
     @Override
-    public List<Intern> searchInterns(String query) {
-        return internDao.searchInterns(query);
+    public List<InternResponse> searchInterns(String query) {
+        List<Intern> interns = internDao.searchInterns(query);
+        return internMapper.mapToInternResponseUS15(interns);
+
+
     }
 
 

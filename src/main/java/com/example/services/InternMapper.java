@@ -1,5 +1,7 @@
 package com.example.services;
 
+import java.util.List;
+
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -31,10 +33,12 @@ public interface InternMapper {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "intern.name", target = "name")
     @Mapping(source = "intern.surname1", target = "surname1")
-    @Mapping(source = "intern.surname2", target = "surname2")
+   // @Mapping(source = "intern.surname2", target = "surname2")
     @Mapping(source = "intern.center", target = "center")
     @Mapping(source = "intern.globalID", target = "globalID")
-    InternResponse maptoInternResponseUS15(Intern intern);
+    InternResponse mapToInternResponseUS15(Intern intern);
+    List<InternResponse> mapToInternResponseUS15(List<Intern> interns);
+ 
 
 
 }
