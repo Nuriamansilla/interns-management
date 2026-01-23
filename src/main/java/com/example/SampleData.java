@@ -19,6 +19,9 @@ import com.example.entities.Level;
 import com.example.services.AcademicInformationService;
 import com.example.services.InternService;
 import com.example.services.LanguageService;
+import com.example.spring_security_jwt.models.ERole;
+import com.example.spring_security_jwt.models.Role;
+import com.example.spring_security_jwt.repository.RoleRepository;
 
 
 @Configuration
@@ -27,7 +30,8 @@ public class SampleData {
     @Bean
     public CommandLineRunner samplesData(InternService internService, 
             AcademicInformationService academicInformationService,
-            LanguageService languageService) {
+            LanguageService languageService,
+            RoleRepository roleRepository) {
 
         return args -> {
     
@@ -156,8 +160,9 @@ public class SampleData {
                        .intern(internService.findById(4))
                        .build());
 
-    
-
+        // Agregamos los roles de USER y ADMIN
+        roleRepository.save(Role.builder().name(ERole.ROLE_ADMIN).build());
+        roleRepository.save(Role.builder().name(ERole.ROLE_USER).build());
 
         };
      }
