@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class HRController {
    // ADD A FEEDBACK
    // ******************************************************
    // ******************************************************
-   // POST http://localhost:8080/interns/556677889/hRfeedbacks donde globalID es 55667799 *****
+   // POST http://localhost:8080/interns/55667788/hRfeedbacks donde globalID es 55667788 *****
 
    private static final DateTimeFormatter ISO_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
    
@@ -66,6 +67,7 @@ public class HRController {
     // Body esperado: { "name": "...", "date": "DD/MM/YYYY", "hrUser": "...", "comments": "..." }
 
     @PostMapping("/{globalId}/hRfeedbacks")
+    @PreAuthorize("hasRole('HRUSER')")
     public ResponseEntity<Map<String, Object>> addOne(
             @PathVariable(name = "globalId", required = true) Long globalId,
             @RequestBody Map<String, Object> body) {
@@ -140,11 +142,12 @@ public class HRController {
         //******************************************************************
         // ===================== US 2.1 – HR profile =====================
                 // Muestra SOLO lo que pide la user story (y feedbacks)
-        // GET   http://localhost:8080/interns/556677889/hr-profile ********* donde globalID es 55667799 *****
+        // GET   http://localhost:8080/interns/55667788/hr-profile ********* donde globalID es 55667788 *****
         // *********************************************+++*******************   
 
    
 @GetMapping("/{globalId}/hr-profile")
+@PreAuthorize("hasRole('HRUSER')")
     public ResponseEntity<Map<String, Object>> getHrProfile(
             @PathVariable("globalId") Long globalId) {
 
