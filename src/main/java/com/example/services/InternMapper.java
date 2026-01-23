@@ -33,7 +33,7 @@ public interface InternMapper {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "intern.name", target = "name")
     @Mapping(source = "intern.surname1", target = "surname1")
-   // @Mapping(source = "intern.surname2", target = "surname2")
+    @Mapping(source = "intern.surname2", target = "surname2")
     @Mapping(source = "intern.center", target = "center")
     @Mapping(source = "intern.globalID", target = "globalID")
     InternResponse mapToInternResponseUS15(Intern intern);

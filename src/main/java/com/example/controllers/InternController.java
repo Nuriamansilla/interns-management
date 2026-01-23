@@ -67,49 +67,49 @@ public class InternController {
     // FIND BY GLOBAL ID
     
    
-@GetMapping("/{globalId}")
-@Transactional
-public ResponseEntity<InternResponse> findInternByGlobalID(
-        @PathVariable Long globalId) throws InstanceNotFoundException {
+    // @GetMapping("/{globalId}")
+    // @Transactional
+    // public ResponseEntity<InternResponse> findInternByGlobalID(
+    //     @PathVariable Long globalId) throws InstanceNotFoundException {
 
-    try {
-        InternResponse dto = internService.getInternByGlobalId(globalId);
-        return ResponseEntity.ok(dto);
+    //     try {
+    //     InternResponse dto = internService.getInternByGlobalId(globalId);
+    //     return ResponseEntity.ok(dto);
 
-    } catch (DataAccessException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-}
+    //     } catch (DataAccessException e) {
+    //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //     }
+    // }   
 
 // Método antes del DTO
 
-//  @GetMapping("/{globalID}")
-//     public ResponseEntity<Map<String, Object>> findInternByGlobalID(
-//         @PathVariable(name = "globalID", required = true) long globalID) {
+ @GetMapping("/{globalID}")
+    public ResponseEntity<Map<String, Object>> findInternByGlobalID(
+        @PathVariable(name = "globalID", required = true) long globalID) {
 
-//         ResponseEntity<Map<String, Object>> responseEntity = null;
-//         var responseAsMap = new HashMap<String, Object>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        var responseAsMap = new HashMap<String, Object>();
 
-//         try {
-//             Intern intern = internService.findByGlobalID(globalID);
-//             if (intern !=null) {
-//                 String successMessage = "Intern with global ID " + globalID + " has been found";
-//                 responseAsMap.put("message", successMessage);
-//                 responseAsMap.put("intern", intern);
-//                 responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
-//             } else {
-//                  String notFoundMessage = "Intern with global ID " + globalID + " has not been found"; 
-//                 responseAsMap.put("notFoundMessage", notFoundMessage);
-//                 responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
-//             }
-//         } catch (DataAccessException e) {
-//            String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-//             responseAsMap.put("message", errorMessage); 
-//             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-//         }
+        try {
+            InternResponse intern = internService.getInternByGlobalId(globalID);
+            if (intern !=null) {
+                String successMessage = "Intern with global ID " + globalID + " has been found";
+                responseAsMap.put("message", successMessage);
+                responseAsMap.put("intern", intern);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                 String notFoundMessage = "Intern with global ID " + globalID + " has not been found"; 
+                responseAsMap.put("notFoundMessage", notFoundMessage);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
+            }
+        } catch (DataAccessException e) {
+           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage); 
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-//         return responseEntity; 
-//      }   
+        return responseEntity; 
+     }   
 
     
     // SAVE
@@ -241,139 +241,105 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
 
 
 
-    // //Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
-
-    //  @GetMapping(path = "/interns-by-name")
-    // public ResponseEntity<Map<String, Object>> findInternByName(
-    //     @RequestParam(name = "name", required = true) String name) {
-
-    //     ResponseEntity<Map<String, Object>> responseEntity = null;
-    //     var responseAsMap = new HashMap<String, Object>();
-
-    //     try {
-    //         InternResponse intern = internService.findByName(name);
-    //         if (intern !=null) {
-    //             String successMessage = "Intern with name " + name + " has been found";
-    //             responseAsMap.put("message", successMessage);
-    //             responseAsMap.put("internList", intern);
-    //             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
-    //         } else {
-    //              String notFoundMessage = "Intern with name" + name + " has not been found"; 
-    //             responseAsMap.put("notFoundMessage", notFoundMessage);
-    //             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
-    //         }
-    //     } catch (DataAccessException e) {
-    //        String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-    //         responseAsMap.put("message", errorMessage); 
-    //         responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-
-    //     return responseEntity; 
-    //  }   
-
-    //  //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
-     
-    //  @GetMapping(path = "/interns-by-surname")
-    // public ResponseEntity<Map<String, Object>> findInternBySurname1(
-    //     @RequestParam(name = "surname1", required = true) String surname1) {
-
-    //     ResponseEntity<Map<String, Object>> responseEntity = null;
-    //     var responseAsMap = new HashMap<String, Object>();
-
-    //     try {
-    //         Intern intern = internService.findBySurname1(surname1);
-    //         if (intern !=null) {
-    //             String successMessage = "Intern with surname " + surname1 + " has been found";
-    //             responseAsMap.put("message", successMessage);
-    //             responseAsMap.put("internList", intern);
-    //             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
-    //         } else {
-    //              String notFoundMessage = "Intern with surname" + surname1 + " has not been found"; 
-    //             responseAsMap.put("notFoundMessage", notFoundMessage);
-    //             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
-    //         }
-    //     } catch (DataAccessException e) {
-    //        String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-    //         responseAsMap.put("message", errorMessage); 
-    //         responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-
-    //     return responseEntity; 
-    //  }   
-
-      //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
-     
-    //  @GetMapping(path = "/interns-by-surname")
-    // public ResponseEntity<Map<String, Object>> findInternBySurname1(
-    //     @RequestParam(name = "surname1", required = true) String surname1) {
-
-    //     ResponseEntity<Map<String, Object>> responseEntity = null;
-    //     var responseAsMap = new HashMap<String, Object>();
-
-    //     try {
-    //         InternResponse intern = internService.findBySurname1(surname1);
-    //         if (intern !=null) {
-    //             String successMessage = "Intern with surname " + surname1 + " has been found";
-    //             responseAsMap.put("message", successMessage);
-    //             responseAsMap.put("internList", intern);
-    //             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
-    //         } else {
-    //              String notFoundMessage = "Intern with surname" + surname1 + " has not been found"; 
-    //             responseAsMap.put("notFoundMessage", notFoundMessage);
-    //             responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
-    //         }
-    //     } catch (DataAccessException e) {
-    //        String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-    //         responseAsMap.put("message", errorMessage); 
-    //         responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-
-    //     return responseEntity; 
-    //  }  
-
-    
- 
-     //Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
+    // Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
 
     @GetMapping(path = "/interns-by-name")
-    public ResponseEntity<InternResponse> findInternByName(
-        @RequestParam String name) {
+    public ResponseEntity<Map<String, Object>> findInternByName(
+        @RequestParam(name = "name", required = true) String name) {
 
-    InternResponse internResponse = internService.findByName(name);
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        var responseAsMap = new HashMap<String, Object>();
 
-    if (internResponse == null) {
-        return ResponseEntity.notFound().build();
-    }
-    return ResponseEntity.ok(internResponse);
-
-    }
-
-    //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
-    @GetMapping(path = "/interns-by-surname")
-    public ResponseEntity<InternResponse> findInternBySurname1(@RequestParam String surname1){
-
-        InternResponse internResponse = internService.findBySurname1(surname1);
-
-        if (internResponse == null) {
-            return ResponseEntity.notFound().build();
+        try {
+            InternResponse intern = internService.findByName(name);
+            if (intern !=null) {
+                String successMessage = "Intern with name " + name + " has been found";
+                responseAsMap.put("message", successMessage);
+                responseAsMap.put("internList", intern);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                 String notFoundMessage = "Intern with name" + name + " has not been found"; 
+                responseAsMap.put("notFoundMessage", notFoundMessage);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
+            }
+        } catch (DataAccessException e) {
+           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage); 
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok(internResponse);
-    }
+        return responseEntity; 
+     }   
 
+    //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
+     
+    @GetMapping(path = "/interns-by-surname")
+    public ResponseEntity<Map<String, Object>> findInternBySurname1(
+        @RequestParam(name = "surname1", required = true) String surname1) {
 
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        var responseAsMap = new HashMap<String, Object>();
 
+        try {
+            InternResponse intern = internService.findBySurname1(surname1);
+            if (intern !=null) {
+                String successMessage = "Intern with surname " + surname1 + " has been found";
+                responseAsMap.put("message", successMessage);
+                responseAsMap.put("internList", intern);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                 String notFoundMessage = "Intern with surname " + surname1 + " has not been found"; 
+                responseAsMap.put("notFoundMessage", notFoundMessage);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
+            }
+        } catch (DataAccessException e) {
+           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage); 
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
+        return responseEntity; 
+     }   
+
+      
+ 
+    //  //Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
+
+    // @GetMapping(path = "/interns-by-name")
+    // public ResponseEntity<InternResponse> findInternByName(
+    //     @RequestParam String name) {
+
+    //     InternResponse internResponse = internService.findByName(name);
+
+    //      if (internResponse == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+
+    //     return ResponseEntity.ok(internResponse);
+
+    // }
+
+    // //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
+    // @GetMapping(path = "/interns-by-surname")
+    // public ResponseEntity<InternResponse> findInternBySurname1(@RequestParam String surname1){
+
+    //     InternResponse internResponse = internService.findBySurname1(surname1);
+
+    //     if (internResponse == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+
+    //     return ResponseEntity.ok(internResponse);
+    // }
 
 
      //busqueda por lista US 1.5
-     // http://localhost:8080/interns/interns/search?query=MURCIA
+     //http://localhost:8080/interns/interns/search?query=MURCIA
      //http://localhost:8080/interns/interns/search?query=Amel
      //http://localhost:8080/interns/interns/search?query=Mansilla
      //http://localhost:8080/interns/interns/search?query=987654321
       @GetMapping("/interns/search")
      public ResponseEntity<List<InternResponse>> searchInterns(@RequestParam String query) {
-
 
         List<InternResponse> list = internService.searchInterns(query);
 
@@ -383,7 +349,7 @@ public ResponseEntity<InternResponse> findInternByGlobalID(
         }
 
         return ResponseEntity.ok(list); 
-    }; 
+    }
     
 
 
