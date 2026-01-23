@@ -30,4 +30,9 @@ public class AcademicInformationServiceImpl implements AcademicInformationServic
         return academicInformationDao.save(academicInformation);
     }
 
+    @Override
+    public AcademicInformation getAcademicInformationById(int id) {
+        return academicInformationDao.findById(id).get();
+    }
+
 }

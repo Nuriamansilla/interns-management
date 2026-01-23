@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import com.example.dtos.InternResponse;
 import com.example.entities.Intern;
 
 public interface InternService {
@@ -21,4 +22,5 @@ public interface InternService {
     Intern findBySurname1(String surname1);
     boolean existsByGlobalID(Long globalID);
     List<Intern> searchInterns(String query);
+    InternResponse getInternById(Integer id);
 }
