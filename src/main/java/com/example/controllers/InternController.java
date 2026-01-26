@@ -120,6 +120,7 @@ public class InternController {
 
     @PostMapping
     @Transactional
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public  ResponseEntity<Map<String, Object>> saveIntern(@Valid @RequestBody Intern intern,
         BindingResult results) {
 
@@ -176,6 +177,7 @@ public class InternController {
 
     @PutMapping("/{globalID}")
     @Transactional
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public  ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
         BindingResult results, @PathVariable(name = "globalID", required = true) Long globalID ){
 
@@ -222,6 +224,7 @@ public class InternController {
         
     @DeleteMapping("/{globalID}")
     @Transactional
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> deleteIntern(
         @PathVariable(name="globalID", required=true) long globalID) {
        
@@ -248,6 +251,7 @@ public class InternController {
     // Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
 
     @GetMapping(path = "/interns-by-name")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternByName(
         @RequestParam(name = "name", required = true) String name) {
 
@@ -278,6 +282,7 @@ public class InternController {
     //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
      
     @GetMapping(path = "/interns-by-surname")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternBySurname1(
         @RequestParam(name = "surname1", required = true) String surname1) {
 
@@ -343,6 +348,7 @@ public class InternController {
      //http://localhost:8080/interns/interns/search?query=Mansilla
      //http://localhost:8080/interns/interns/search?query=987654321
       @GetMapping("/interns/search")
+      @PreAuthorize("hasRole('ADMINISTRATOR')")
      public ResponseEntity<List<InternResponse>> searchInterns(@RequestParam String query) {
 
         List<InternResponse> list = internService.searchInterns(query);
