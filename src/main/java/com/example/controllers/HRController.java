@@ -32,26 +32,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HRController {
 
-   private final HRfeedbackService hRfeedbackService;
-   private final InternService internService;
-    
-   // ******************************************************
-   // ADD A FEEDBACK
-   // ******************************************************
-   // ******************************************************
-   // POST http://localhost:8080/interns/55667788/hRfeedbacks donde globalID es 55667788 *****
+    private final HRfeedbackService hRfeedbackService;
+    private final InternService internService;
 
-   private static final DateTimeFormatter ISO_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-   
-   
-   // ====== helpers privados (validación y utilidades) ======
+    // ******************************************************
+    // ADD A FEEDBACK
+    // ******************************************************
+    // ******************************************************
+    // POST http://localhost:8080/interns/55667788/hRfeedbacks donde globalID es
+    // 55667788 *****
+
+    private static final DateTimeFormatter ISO_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    // ====== helpers privados (validación y utilidades) ======
     private static String asString(Map<String, Object> map, String key) {
         Object v = map.get(key);
         return v == null ? null : v.toString();
     }
 
-    
-      private static boolean isValidIsoDate(String date) {
+    private static boolean isValidIsoDate(String date) {
         return date != null && date.matches("\\d{4}-\\d{2}-\\d{2}");
     }
 
@@ -59,12 +58,12 @@ public class HRController {
         Map<String, Object> m = new HashMap<>();
         m.put("message", message);
         return m;
-}
-
+    }
 
     // ============ Añadir UN feedback ============
-    // POST /interns/{globalId}/feedbacks  -> añade UN feedback por llamada
-    // Body esperado: { "name": "...", "date": "DD/MM/YYYY", "hrUser": "...", "comments": "..." }
+    // POST /interns/{globalId}/feedbacks -> añade UN feedback por llamada
+    // Body esperado: { "name": "...", "date": "DD/MM/YYYY", "hrUser": "...",
+    // "comments": "..." }
 
     @PostMapping("/{globalId}/hRfeedbacks")
     @PreAuthorize("hasRole('HRUSER')")
@@ -78,8 +77,8 @@ public class HRController {
         try {
             // 1) Verificar que el intern existe
             Intern intern = internService.findByGlobalID(globalId);
-          
-         if (intern == null) {
+
+            if (intern == null) {
                 return new ResponseEntity<>(errorBody("El intern con globalId " + globalId + " no se ha encontrado"),
                         HttpStatus.NOT_FOUND);
             }
@@ -90,10 +89,9 @@ public class HRController {
             String hrUser = asString(body, "hrUser");
             String comments = asString(body, "comments");
 
-            if (nameFeedback== null || dateOfFeedBack == null || hrUser == null || comments == null) {
-            
-                   return new ResponseEntity<>(errorBody
-                    ("Faltan campos obligatorios: name, date, hrUser, comments"),
+            if (nameFeedback == null || dateOfFeedBack == null || hrUser == null || comments == null) {
+
+                return new ResponseEntity<>(errorBody("Faltan campos obligatorios: name, date, hrUser, comments"),
                         HttpStatus.BAD_REQUEST);
             };
 
@@ -102,66 +100,62 @@ public class HRController {
                 return new ResponseEntity<>(errorBody("date debe tener formato DD/MM/YYYY"),
                         HttpStatus.BAD_REQUEST);
             }
-            
+
             if (comments.length() > 1000) {
 
                 return new ResponseEntity<>(errorBody("comments no puede superar 1000 caracteres"),
                         HttpStatus.BAD_REQUEST);
             }
-           
-          // 3) Construir la entidad Feedback y persistir
+
+            // 3) Construir la entidad Feedback y persistir
             HRfeedback f = HRfeedback.builder()
-                  .intern(intern)
-                  .nameFeedback(nameFeedback)
-                  .dateOfFeedBack(LocalDate.parse(dateOfFeedBack, ISO_DATE))
-                  .hrUser(hrUser)
-                  .comments(comments)
-                  .build();
-            
+                    .intern(intern)
+                    .nameFeedback(nameFeedback)
+                    .dateOfFeedBack(LocalDate.parse(dateOfFeedBack, ISO_DATE))
+                    .hrUser(hrUser)
+                    .comments(comments)
+                    .build();
 
             HRfeedback saved = hRfeedbackService.save(f); // <-- UNO: save(...)
 
             // 4) Respuesta OK
             map.put("message", "Se ha añadido el feedback al intern con globalId " + globalId);
 
-            
-               map.put("feedbackId", saved.getId());
+            map.put("feedbackId", saved.getId());
 
             return ResponseEntity
                     .created(URI.create("/interns/" + globalId + "/feedbacks/" + saved.getId()))
                     .body(map);
 
-             } catch (DataAccessException e) {
+        } catch (DataAccessException e) {
             // Errores de BBDD
             map.put("message", "Error grave y la causa más probable es: " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    
-}
 
-        //******************************************************************
-        // ===================== US 2.1 – HR profile =====================
-                // Muestra SOLO lo que pide la user story (y feedbacks)
-        // GET   http://localhost:8080/interns/55667788/hr-profile ********* donde globalID es 55667788 *****
-        // *********************************************+++*******************   
+    }
 
-   
-@GetMapping("/{globalId}/hr-profile")
-@PreAuthorize("hasRole('HRUSER')")
+    // ******************************************************************
+    // ===================== US 2.1 – HR profile =====================
+    // Muestra SOLO lo que pide la user story (y feedbacks)
+    // GET http://localhost:8080/interns/55667788/hr-profile ********* donde
+    // globalID es 55667788 *****
+    // *********************************************+++*******************
+
+    @GetMapping("/{globalId}/hr-profile")
+    @PreAuthorize("hasRole('HRUSER')")
     public ResponseEntity<Map<String, Object>> getHrProfile(
             @PathVariable("globalId") Long globalId) {
 
         var map = new HashMap<String, Object>();
 
-        
-try {
+        try {
             // 1) Verificar intern por globalID
             Intern intern = internService.findByGlobalID(globalId);
             if (intern == null) {
                 return new ResponseEntity<>(
                         errorBody("El intern con globalId " + globalId + " no se ha encontrado"),
-                        HttpStatus.NOT_FOUND
-                );
+                        HttpStatus.NOT_FOUND);
             }
 
             // 2) Cargar feedbacks ordenados desc por fecha
@@ -172,7 +166,7 @@ try {
             profile.put("name", intern.getName());
             profile.put("surname1", intern.getSurname1());
             profile.put("surname2", intern.getSurname2());
-            profile.put("globalID", intern.getGlobalID());     // respeta tu casing
+            profile.put("globalID", intern.getGlobalID()); // respeta tu casing
             profile.put("gender", intern.getGender().name());
             profile.put("center", intern.getCenter().name());
 
@@ -199,6 +193,4 @@ try {
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

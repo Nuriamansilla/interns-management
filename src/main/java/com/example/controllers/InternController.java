@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,88 +39,85 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InternController {
 
-    private final InternService internService; 
+    private final InternService internService;
 
     // READ
 
     @GetMapping
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<List<Intern>> getInterns( 
-        @RequestParam (name = "page", required = false) Integer page,
-        @RequestParam(name = "size", required = false) Integer size) {
+    public ResponseEntity<List<Intern>> getInterns(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
 
-            List<Intern> interns = null; 
-            Sort sort = Sort.by("name");
+        List<Intern> interns = null;
+        Sort sort = Sort.by("name");
 
-            if (page !=null && size !=null) {
+        if (page != null && size != null) {
             Pageable pageable = PageRequest.of(page, size, sort);
             Page<Intern> paginaDeInterns = internService.findAll(pageable);
-            interns = paginaDeInterns.getContent();     
-            }else{
-                interns = internService.findAll(sort);
-            }
+            interns = paginaDeInterns.getContent();
+        } else {
+            interns = internService.findAll(sort);
+        }
 
-        return new ResponseEntity<List<Intern>>(interns, HttpStatus.OK); 
+        return new ResponseEntity<List<Intern>>(interns, HttpStatus.OK);
     }
 
-
     // FIND BY GLOBAL ID
-    
-   
+
     // @GetMapping("/{globalId}")
     // @Transactional
     // public ResponseEntity<InternResponse> findInternByGlobalID(
-    //     @PathVariable Long globalId) throws InstanceNotFoundException {
+    // @PathVariable Long globalId) throws InstanceNotFoundException {
+    //
+    // try {
+    // InternResponse dto = internService.getInternByGlobalId(globalId);
+    // return ResponseEntity.ok(dto);
+    //
+    // } catch (DataAccessException e) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    // }
+    // }
 
-    //     try {
-    //     InternResponse dto = internService.getInternByGlobalId(globalId);
-    //     return ResponseEntity.ok(dto);
+    // Método antes del DTO
 
-    //     } catch (DataAccessException e) {
-    //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    //     }
-    // }   
-
-// Método antes del DTO
-
- 
     @GetMapping("/{globalID}")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternByGlobalID(
-        @PathVariable(name = "globalID", required = true) long globalID) {
+            @PathVariable(name = "globalID", required = true) long globalID) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
             InternResponse intern = internService.getInternByGlobalId(globalID);
-            if (intern !=null) {
+            if (intern != null) {
                 String successMessage = "Intern with global ID " + globalID + " has been found";
                 responseAsMap.put("message", successMessage);
                 responseAsMap.put("intern", intern);
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
-                 String notFoundMessage = "Intern with global ID " + globalID + " has not been found"; 
+                String notFoundMessage = "Intern with global ID " + globalID + " has not been found";
                 responseAsMap.put("notFoundMessage", notFoundMessage);
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.NOT_FOUND);
             }
         } catch (DataAccessException e) {
-           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-            responseAsMap.put("message", errorMessage); 
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            String errorMessage = "Several error and the most likely cause is: "
+                    + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return responseEntity; 
-     }   
+        return responseEntity;
+    }
 
-    
     // SAVE
 
     @PostMapping
     @Transactional
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public  ResponseEntity<Map<String, Object>> saveIntern(@Valid @RequestBody Intern intern,
-        BindingResult results) {
+    public ResponseEntity<Map<String, Object>> saveIntern(@Valid @RequestBody Intern intern,
+            BindingResult results) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
@@ -130,16 +125,21 @@ public class InternController {
         // Comprobar si el producto recibido en el cuerpo de la petición tiene errores
 
         if (results.hasErrors()) {
-                
-            //Recuperar todos los errores que tiene el producto recibido en formato JSON
+
+            // Recuperar todos los errores que tiene el producto recibido en formato JSON
             List<ObjectError> objectErrors = results.getAllErrors();
 
-            /* Hay que recorrer la lista de ObjecError para recuperar los mensajes de error
-            por defecto que voy a mostrar al cliente que ha realizado la petición, es decir,
-            que ha enviado el producto mal formado */
+            /*
+             * Hay que recorrer la lista de ObjecError para recuperar los mensajes de error
+             * por defecto que voy a mostrar al cliente que ha realizado la petición, es
+             * decir,
+             * que ha enviado el producto mal formado
+             */
 
-            /*Los mensajes de error tienen que ser almacenados en una lista donde
-            cada elemento de la lista sea un String*/
+            /*
+             * Los mensajes de error tienen que ser almacenados en una lista donde
+             * cada elemento de la lista sea un String
+             */
             List<String> errorMessage = new ArrayList<>();
 
             objectErrors.forEach(objectError -> errorMessage.add(objectError.getDefaultMessage()));
@@ -147,45 +147,46 @@ public class InternController {
             responseAsMap.put("errors", errorMessage);
             responseAsMap.put("intern", intern);
 
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
 
             return responseEntity;
         }
-        
 
-        /* Si no hay errores vamos a persistir/guardar el intern recibido en el cuerpo de la petición
-        y devolver información al respecto como se requiere para una API REST */
+        /*
+         * Si no hay errores vamos a persistir/guardar el intern recibido en el cuerpo
+         * de la petición
+         * y devolver información al respecto como se requiere para una API REST
+         */
 
         try {
             Intern internSaved = internService.save(intern);
             String message = "Intern has been successfully created";
             responseAsMap.put("mensaje", message);
             responseAsMap.put("intern", internSaved);
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.CREATED);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.CREATED);
         } catch (DataAccessException e) {
             String errorMessage = "The intern could not be created and the most likely cause is: "
-                                + e.getMostSpecificCause();
+                    + e.getMostSpecificCause();
             responseAsMap.put("several error", errorMessage);
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
     }
-
 
     // UPDATE
 
     @PutMapping("/{globalID}")
     @Transactional
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public  ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
-        BindingResult results, @PathVariable(name = "globalID", required = true) Long globalID ){
+    public ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
+            BindingResult results, @PathVariable(name = "globalID", required = true) Long globalID) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
 
         if (results.hasErrors()) {
-            
+
             List<ObjectError> objectErrors = results.getAllErrors();
 
             List<String> errorMessage = new ArrayList<>();
@@ -195,11 +196,10 @@ public class InternController {
             responseAsMap.put("errors", errorMessage);
             responseAsMap.put("intern", intern);
 
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
 
             return responseEntity;
         }
-        
 
         try {
             intern.setGlobalID(globalID);
@@ -207,164 +207,166 @@ public class InternController {
             String message = "Intern has been successfully updated";
             responseAsMap.put("message", message);
             responseAsMap.put("intern", internSaved);
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.CREATED);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.CREATED);
         } catch (DataAccessException e) {
             String errorMessage = "The intern could not be updated and the most likely cause is: "
-                                 + e.getMostSpecificCause();
+                    + e.getMostSpecificCause();
             responseAsMap.put("several error", errorMessage);
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 
         return responseEntity;
     }
 
+    // DELETE
 
-    // DELETE    
-        
     @DeleteMapping("/{globalID}")
     @Transactional
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> deleteIntern(
-        @PathVariable(name="globalID", required=true) long globalID) {
-       
+            @PathVariable(name = "globalID", required = true) long globalID) {
+
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
- 
+
         try {
             internService.delete(internService.findByGlobalID(globalID));
             String successMessage = "The intern with global ID " + globalID + " has been deleted.";
             responseAsMap.put("message", successMessage);
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
         } catch (DataAccessException e) {
-            String errorMessage = "The intern with global ID " + globalID + " could not be deleted, the most likely cause of the error is:"
-                                  + e.getMostSpecificCause();
+            String errorMessage = "The intern with global ID " + globalID
+                    + " could not be deleted, the most likely cause of the error is:"
+                    + e.getMostSpecificCause();
             responseAsMap.put("message", errorMessage);
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
- 
+
         return responseEntity;
     }
 
-
-
-    // Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
+    
+    // Busqueda por nombre
+    // http://localhost:8080/interns/interns-by-name?name=nuria
 
     @GetMapping(path = "/interns-by-name")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternByName(
-        @RequestParam(name = "name", required = true) String name) {
+            @RequestParam(name = "name", required = true) String name) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
             InternResponse intern = internService.findByName(name);
-            if (intern !=null) {
+            if (intern != null) {
                 String successMessage = "Intern with name " + name + " has been found";
                 responseAsMap.put("message", successMessage);
                 responseAsMap.put("internList", intern);
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
-                 String notFoundMessage = "Intern with name" + name + " has not been found"; 
+                String notFoundMessage = "Intern with name" + name + " has not been found";
                 responseAsMap.put("notFoundMessage", notFoundMessage);
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.NOT_FOUND);
             }
         } catch (DataAccessException e) {
-           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-            responseAsMap.put("message", errorMessage); 
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            String errorMessage = "Several error and the most likely cause is: "
+                    + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return responseEntity; 
-     }   
+        return responseEntity;
+    }
 
-    //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
-     
+    
+    // Busqueda por primer apellido
+    // http://localhost:8080/interns/interns-by-surname?surname1=belamria
+
     @GetMapping(path = "/interns-by-surname")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternBySurname1(
-        @RequestParam(name = "surname1", required = true) String surname1) {
+            @RequestParam(name = "surname1", required = true) String surname1) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
             InternResponse intern = internService.findBySurname1(surname1);
-            if (intern !=null) {
+            if (intern != null) {
                 String successMessage = "Intern with surname " + surname1 + " has been found";
                 responseAsMap.put("message", successMessage);
                 responseAsMap.put("internList", intern);
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
-                 String notFoundMessage = "Intern with surname " + surname1 + " has not been found"; 
+                String notFoundMessage = "Intern with surname " + surname1 + " has not been found";
                 responseAsMap.put("notFoundMessage", notFoundMessage);
-                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.NOT_FOUND);     
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.NOT_FOUND);
             }
         } catch (DataAccessException e) {
-           String errorMessage = "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage();
-            responseAsMap.put("message", errorMessage); 
-            responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            String errorMessage = "Several error and the most likely cause is: "
+                    + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return responseEntity; 
-     }   
+        return responseEntity;
+    }
 
-      
- 
-    //  //Busqueda por nombre http://localhost:8080/interns/interns-by-name?name=nuria
+    
+    // //Busqueda por nombre
+    // http://localhost:8080/interns/interns-by-name?name=nuria
 
     // @GetMapping(path = "/interns-by-name")
     // public ResponseEntity<InternResponse> findInternByName(
-    //     @RequestParam String name) {
-
-    //     InternResponse internResponse = internService.findByName(name);
-
-    //      if (internResponse == null) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-
-    //     return ResponseEntity.ok(internResponse);
-
+    // @RequestParam String name) {
+    //
+    // InternResponse internResponse = internService.findByName(name);
+    //
+    // if (internResponse == null) {
+    // return ResponseEntity.notFound().build();
+    // }
+    //
+    // return ResponseEntity.ok(internResponse);
+    //
     // }
 
-    // //Busqueda por primer apellido  http://localhost:8080/interns/interns-by-surname?surname1=belamria
+    
+    // //Busqueda por primer apellido
+    // http://localhost:8080/interns/interns-by-surname?surname1=belamria
+
     // @GetMapping(path = "/interns-by-surname")
-    // public ResponseEntity<InternResponse> findInternBySurname1(@RequestParam String surname1){
-
-    //     InternResponse internResponse = internService.findBySurname1(surname1);
-
-    //     if (internResponse == null) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-
-    //     return ResponseEntity.ok(internResponse);
+    // public ResponseEntity<InternResponse> findInternBySurname1(@RequestParam
+    // String surname1){
+    //
+    // InternResponse internResponse = internService.findBySurname1(surname1);
+    //
+    // if (internResponse == null) {
+    // return ResponseEntity.notFound().build();
+    // }
+    //
+    // return ResponseEntity.ok(internResponse);
     // }
 
 
-     //busqueda por lista US 1.5
-     //http://localhost:8080/interns/interns/search?query=MURCIA
-     //http://localhost:8080/interns/interns/search?query=Amel
-     //http://localhost:8080/interns/interns/search?query=Mansilla
-     //http://localhost:8080/interns/interns/search?query=987654321
-      @GetMapping("/interns/search")
-      @PreAuthorize("hasRole('ADMINISTRATOR')")
-     public ResponseEntity<List<InternResponse>> searchInterns(@RequestParam String query) {
+    // busqueda por lista US 1.5
+    // http://localhost:8080/interns/interns/search?query=MURCIA
+    // http://localhost:8080/interns/interns/search?query=Amel
+    // http://localhost:8080/interns/interns/search?query=Mansilla
+    // http://localhost:8080/interns/interns/search?query=987654321
+    @GetMapping("/interns/search")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<List<InternResponse>> searchInterns(@RequestParam String query) {
 
         List<InternResponse> list = internService.searchInterns(query);
 
         if (list.isEmpty()) {
             return ResponseEntity.notFound().build();
-            
+
         }
 
-        return ResponseEntity.ok(list); 
+        return ResponseEntity.ok(list);
     }
-    
 
-
-
-     }
-
-
-
+}

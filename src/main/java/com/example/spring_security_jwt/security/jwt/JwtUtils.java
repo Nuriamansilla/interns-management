@@ -36,11 +36,11 @@ public class JwtUtils {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
-            .subject(userPrincipal.getUsername())
-            .issuedAt(new Date())
-            .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
-            .signWith(key())
-            .compact();
+                .subject(userPrincipal.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key())
+                .compact();
     }
 
     private Key key() {
@@ -49,7 +49,7 @@ public class JwtUtils {
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().verifyWith((SecretKey) key()).build()
-            .parseSignedClaims(token).getPayload().getSubject();
+                .parseSignedClaims(token).getPayload().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
@@ -66,7 +66,6 @@ public class JwtUtils {
         } catch (IllegalArgumentException e) {
             LOGGER.error("JWT claims string is empty: {}", e.getMessage());
         }
-
 
         return false;
     }

@@ -41,7 +41,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -50,51 +49,52 @@ public class AuthController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
-
-     @PostMapping("/signup")
+    @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest,
-        BindingResult validationResults) {
+            BindingResult validationResults) {
 
-        if (userRepository.existsByUsername(signupRequest.getUsername()))  {
+        if (userRepository.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error: Username is already taken"));
-        } 
-        
-        if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.badRequest()
-                .body(new MessageResponse("Error: Email is already in use!!!"));
+                    .body(new MessageResponse("Error: Username is already taken"));
         }
 
-        // Crear el usuario, es decir, el User para guardarlo en la tabla de User, con 
+        if (userRepository.existsByEmail(signupRequest.getEmail())) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!!!"));
+        }
+
+        // Crear el usuario, es decir, el User para guardarlo en la tabla de User, con
         // las propiedades del JSON recibido en la peticion (signupRequest)
 
         User user = User.builder()
-            .username(signupRequest.getUsername())
-            .email(signupRequest.getEmail())
-            .password(encoder.encode(signupRequest.getPassword()))
-            .build();
-        
+                .username(signupRequest.getUsername())
+                .email(signupRequest.getEmail())
+                .password(encoder.encode(signupRequest.getPassword()))
+                .build();
+
         Set<String> strRoles = signupRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
 
             Role userRole = roleRepository.findByName(ERole.ROLE_HRUSER)
-                .orElseThrow(() -> new RuntimeException("Error: Role not found"));
+                    .orElseThrow(() -> new RuntimeException("Error: Role not found"));
 
             roles.add(userRole);
         } else {
 
-        strRoles.forEach(role -> {
+            strRoles.forEach(role -> {
                 switch (role) {
-                    case "administrator": Role adminRole = roleRepository.findByName(ERole.ROLE_ADMINISTRATOR)
-                                        .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                    case "administrator":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMINISTRATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
                         roles.add(adminRole);
                         break;
-                
-                    default: Role hrUserRole = roleRepository.findByName(ERole.ROLE_HRUSER)
-                                    .orElseThrow(() -> new RuntimeException("Error: Role not found"));
-                        roles.add(hrUserRole);            
+
+                    default:
+                        Role hrUserRole = roleRepository.findByName(ERole.ROLE_HRUSER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role not found"));
+                        roles.add(hrUserRole);
                         break;
                 }
             });
@@ -105,36 +105,35 @@ public class AuthController {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
     }
-// Metodo para logearse un usuario que se ha registrado previamente
+
+    // Metodo para logearse un usuario que se ha registrado previamente
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
 
-        // TODO. Validar el JSON recibido en el cuerpo de la peticion. 
+        // TODO. Validar el JSON recibido en el cuerpo de la peticion.
 
         Authentication authentication = authenticationManager
-            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), 
-                      loginRequest.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
+                        loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication); 
-        
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         List<String> roles = userDetails.getAuthorities().stream()
-            .map(item -> item.getAuthority())
-            .collect(Collectors.toList());
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
 
-        // Mostrar por la consola los roles 
-        LOGGER.info("Roles del usuario: " + roles);   
-        
+        // Mostrar por la consola los roles
+        LOGGER.info("Roles del usuario: " + roles);
+
         return ResponseEntity.ok(new JwtResponse(
-           jwt,
-           userDetails.getId(),
-           userDetails.getUsername(),
-           userDetails.getEmail(),
-           roles 
-        ));
+                jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
     }
 }
-

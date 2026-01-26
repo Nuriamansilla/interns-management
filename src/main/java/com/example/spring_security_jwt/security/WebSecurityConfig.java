@@ -23,10 +23,12 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableMethodSecurity
 /**
- * La anotacion anterior permite securedEnable = true, jsr250Enabled = true y la mas importante
+ * La anotacion anterior permite securedEnable = true, jsr250Enabled = true y la
+ * mas importante
  * prePostEnabled = true.
  * 
- * Que se resume a poder asegurar directamente los metodos de los controladores, es decir,
+ * Que se resume a poder asegurar directamente los metodos de los controladores,
+ * es decir,
  * donde se delegan las peticiones, concretamente los endpoints
  */
 @RequiredArgsConstructor
@@ -58,7 +60,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws  Exception {
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
@@ -66,23 +68,27 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-            // Para saber si la petición está autenticada o no
-            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizeHandle))
-            // Para verificar si la API es sin estado, que es lo que nos interesa por lo general
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            /* Aquí es donde entran nuestros cambios:
-                   Estoy diciendo que las peticiones que lleguen con HTTP tienen que estar
-                   autorizadas, y solo voy a permitir las que vengan por esta ruta.
-                   Para ello crearemos un controller para hacer signup y signin, para que si
-                   entro por ahí no me pida ningún token ni nada. En este path permito hacer todo.
-                   Cualquier otro endpoint o url tiene que estar autenticado para poder acceder. */
-            .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated());
+                // Para saber si la petición está autenticada o no
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizeHandle))
+                // Para verificar si la API es sin estado, que es lo que nos interesa por lo
+                // general
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                /*
+                 * Aquí es donde entran nuestros cambios:
+                 * Estoy diciendo que las peticiones que lleguen con HTTP tienen que estar
+                 * autorizadas, y solo voy a permitir las que vengan por esta ruta.
+                 * Para ello crearemos un controller para hacer signup y signin, para que si
+                 * entro por ahí no me pida ningún token ni nada. En este path permito hacer
+                 * todo.
+                 * Cualquier otro endpoint o url tiene que estar autenticado para poder acceder.
+                 */
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
-        
-        http.addFilterBefore(authenticationJwtTokenFilter(), 
-            UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(authenticationJwtTokenFilter(),
+                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

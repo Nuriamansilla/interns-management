@@ -21,6 +21,4 @@ public interface HRfeedbackService {
 
     List<HRfeedback> findAllByInternGlobalIdOrdered(@Param("globalId") Long globalId);
     
-
-
 }

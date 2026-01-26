@@ -39,6 +39,4 @@ public interface InternMapper {
     InternResponse mapToInternResponseUS15(Intern intern);
     List<InternResponse> mapToInternResponseUS15(List<Intern> interns);
  
-
-
 }

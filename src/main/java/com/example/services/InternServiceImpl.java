@@ -16,8 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class InternServiceImpl implements InternService{
-
+public class InternServiceImpl implements InternService {
 
     private final InternDao internDao;
     private final AcademicInformationService academicInformationService;
@@ -53,81 +52,77 @@ public class InternServiceImpl implements InternService{
         return internDao.findAll();
     }
 
- @Override
-     public Intern findByGlobalID(long globalID) {
+    @Override
+    public Intern findByGlobalID(long globalID) {
         return internDao.findByGlobalID(globalID);
-     }
+    }
 
-     // DTO METHODS
+    // DTO METHODS
 
-    
     // public InternResponse findByName(String name) {
-    //     Intern intern = internDao.findByName(name);
-    //     AcademicInformation academicInformation =
-    //         academicInformationService.findByIntern(intern);
-
-    //     return internMapper.mapInternAndAcademicInformationToInternResponse(
-    //         intern, academicInformation
-    //     );
+    // Intern intern = internDao.findByName(name);
+    // AcademicInformation academicInformation =
+    // academicInformationService.findByIntern(intern);
+    //
+    // return internMapper.mapInternAndAcademicInformationToInternResponse(
+    // intern, academicInformation
+    // );
     // }
-
 
     // public InternResponse findBySurname1(String surname1) {
-
-    //     Intern intern = internDao.findBySurname1(null);
-
-    //     AcademicInformation academicInformation =
-    //         academicInformationService.findByIntern(intern);
-
-    //     InternResponse internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
-    //    return internResponse;
+    //
+    // Intern intern = internDao.findBySurname1(null);
+    //
+    // AcademicInformation academicInformation =
+    // academicInformationService.findByIntern(intern);
+    //
+    // InternResponse internResponse =
+    // internMapper.mapInternAndAcademicInformationToInternResponse(intern,
+    // academicInformation);
+    // return internResponse;
     // }
 
-
-    //  public InternResponse getInternByGlobalId(Long globalID) {
-
-    //     Intern intern = internDao.findByGlobalID(globalID);
-
-    //     AcademicInformation academicInformation = academicInformationService
-    //                         .getAcademicInformationById(intern.getId());
-
-    //     InternResponse internResponse = internMapper.mapInternAndAcademicInformationToInternResponse(intern, academicInformation);
-       
-    //     return internResponse;
-     
-    //  }
-
+    // public InternResponse getInternByGlobalId(Long globalID) {
+    //
+    // Intern intern = internDao.findByGlobalID(globalID);
+    //
+    // AcademicInformation academicInformation = academicInformationService
+    // .getAcademicInformationById(intern.getId());
+    //
+    // InternResponse internResponse =
+    // internMapper.mapInternAndAcademicInformationToInternResponse(intern,
+    // academicInformation);
+    //
+    // return internResponse;
+    //
+    // }
 
     @Override
     public InternResponse getInternByGlobalId(Long globalID) {
-    Intern intern = findByGlobalID(globalID);
+        Intern intern = findByGlobalID(globalID);
         return buildInternResponse(intern);
     }
 
-    
     public InternResponse findByName(String name) {
         Intern intern = internDao.findByName(name);
         return buildInternResponse(intern);
     }
 
-    
     public InternResponse findBySurname1(String surname1) {
         Intern intern = internDao.findBySurname1(surname1);
         return buildInternResponse(intern);
-    
+
     }
-    
 
     private InternResponse buildInternResponse(Intern intern) {
 
-        AcademicInformation academicInformation =
-            academicInformationService.findByIntern(intern)
+        AcademicInformation academicInformation = academicInformationService.findByIntern(intern)
                 .stream()
                 .findFirst()
                 .orElse(null);
 
         return internMapper.mapInternAndAcademicInformationToInternResponse(
-            intern, academicInformation);
+                intern, academicInformation);
 
     }
 
@@ -136,8 +131,6 @@ public class InternServiceImpl implements InternService{
         List<Intern> interns = internDao.searchInterns(query);
         return internMapper.mapToInternResponseUS15(interns);
 
-
     }
-
 
 }
