@@ -2,10 +2,12 @@ package com.example;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Set;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.entities.AcademicInformation;
 import com.example.entities.Center;
@@ -21,7 +23,9 @@ import com.example.services.InternService;
 import com.example.services.LanguageService;
 import com.example.spring_security_jwt.models.ERole;
 import com.example.spring_security_jwt.models.Role;
+import com.example.spring_security_jwt.models.User;
 import com.example.spring_security_jwt.repository.RoleRepository;
+import com.example.spring_security_jwt.repository.UserRepository;
 
 
 @Configuration
@@ -31,7 +35,9 @@ public class SampleData {
     public CommandLineRunner samplesData(InternService internService, 
             AcademicInformationService academicInformationService,
             LanguageService languageService,
-            RoleRepository roleRepository) {
+            RoleRepository roleRepository,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder) {
 
         return args -> {
     
@@ -160,9 +166,25 @@ public class SampleData {
                        .intern(internService.findById(4))
                        .build());
 
+                       
         // Agregamos los roles de USER y ADMIN
-        roleRepository.save(Role.builder().name(ERole.ROLE_ADMINISTRATOR).build());
-        roleRepository.save(Role.builder().name(ERole.ROLE_HRUSER).build());
+
+        Role adminRole = roleRepository.save(Role.builder().name(ERole.ROLE_ADMINISTRATOR).build());
+        Role userRole = roleRepository.save(Role.builder().name(ERole.ROLE_HRUSER).build());
+
+        userRepository.save(User.builder()
+                .username("admin1")
+                .email("admin1@gmail.com")
+                .roles(Set.of(adminRole))
+                .password(passwordEncoder.encode("Lemur2026$$"))
+                .build()); 
+
+        userRepository.save(User.builder()
+                .username("user1")
+                .email("user1@gmail.com")
+                .roles(Set.of(userRole))
+                .password(passwordEncoder.encode("Lemur2026$$"))
+                .build());
 
         };
      }
