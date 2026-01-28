@@ -29,8 +29,5 @@ public class LanguageServiceImpl implements LanguageService {
     public Language findById(int id) {
         return languageDao.findById(id).get();
     }
-    
-
-    
 
 }

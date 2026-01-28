@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class AcademicInformation implements Serializable{
+public class AcademicInformation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,5 +67,5 @@ public class AcademicInformation implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Intern intern;
-    
+
 }

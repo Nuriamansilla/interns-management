@@ -7,8 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -23,21 +21,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Table(name = "HRfeedbacks")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class HRfeedback implements Serializable{
+public class HRfeedback implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @NotNull(message = "The feedback's name is required")
     private String nameFeedback;
 
@@ -52,9 +49,9 @@ public class HRfeedback implements Serializable{
     @Size(max = 1000, message = "feedbacks must not exceed 1000 characters")
     private String comments;
 
-    // CORRECTO: NO MODIFICAR   
+    // CORRECTO: NO MODIFICAR
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Intern intern;
-    
+
 }

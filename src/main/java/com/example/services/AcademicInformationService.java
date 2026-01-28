@@ -11,9 +11,7 @@ public interface AcademicInformationService {
     AcademicInformation findAcademicInformationById(int id);
     AcademicInformation saveAcademicInformation(AcademicInformation academicInformation);
     AcademicInformation getAcademicInformationById(int id);
-    //AcademicInformation findByIntern(Intern intern);
-
-   List<AcademicInformation> findByIntern(Intern intern);
-
+    // AcademicInformation findByIntern(Intern intern);
+    List<AcademicInformation> findByIntern(Intern intern);
 
 }

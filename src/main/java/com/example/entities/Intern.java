@@ -44,7 +44,7 @@ public class Intern implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     // VALIDACIONES Y RELACIONES CORRECTAS: NO MODIFICAR
@@ -56,17 +56,17 @@ public class Intern implements Serializable {
     private String surname1;
 
     private String surname2;
-    
+
     @NotNull(message = "The intern's date of birth is required")
     @Past(message = "The intern's date of birth is required and must be earlier than today")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOfBirth; 
+    private LocalDate dateOfBirth;
 
     // TRES LÍNEAS COMENTADAS PORQUE DAN ERROR: NO DESCOMENTAR
     // // @Min(value = 10000000, message = "globalID must have exactly 8 digit")
     // // @Max(value = 99999999, message = "globalID must have exactly 8 digit")
     // // @Column(name = "global_id", nullable = false, unique = true)
-    @NotNull(message = "The intern's global ID  is required and cannot be null") 
+    @NotNull(message = "The intern's global ID  is required and cannot be null")
     private Long globalID;
 
     @NotNull(message = "The intern's gender is required")
@@ -79,18 +79,19 @@ public class Intern implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "intern_id", referencedColumnName = "id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<AcademicInformation> academicInformation;
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "intern_id", referencedColumnName = "id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<Language> languages;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "intern_id", referencedColumnName = "id")
-   // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "intern")
-    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy =
+    // "intern")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private List<HRfeedback> hrfeedbacks;
-    
+
 }

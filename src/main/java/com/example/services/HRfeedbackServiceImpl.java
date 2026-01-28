@@ -53,12 +53,4 @@ public class HRfeedbackServiceImpl implements HRfeedbackService {
         return hRfeedbackDao.findAllByInternGlobalIdOrdered(globalId);
     }
 
-
-    
-   
-
-   
-   
-
-
 }
