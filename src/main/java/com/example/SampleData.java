@@ -14,11 +14,13 @@ import com.example.entities.Center;
 import com.example.entities.EducationCenter;
 import com.example.entities.EducationLevel;
 import com.example.entities.Gender;
+import com.example.entities.HRfeedback;
 import com.example.entities.Intern;
 import com.example.entities.Language;
 import com.example.entities.LanguageName;
 import com.example.entities.Level;
 import com.example.services.AcademicInformationService;
+import com.example.services.HRfeedbackService;
 import com.example.services.InternService;
 import com.example.services.LanguageService;
 import com.example.spring_security_jwt.models.ERole;
@@ -37,6 +39,7 @@ public class SampleData {
             LanguageService languageService,
             RoleRepository roleRepository,
             UserRepository userRepository,
+            HRfeedbackService hRfeedbackService,
             PasswordEncoder passwordEncoder) {
 
         return args -> {
@@ -185,6 +188,51 @@ public class SampleData {
                 .roles(Set.of(userRole))
                 .password(passwordEncoder.encode("Lemur2026$$"))
                 .build());
+
+
+
+
+        //datos de muestra de hr feedback 
+
+        hRfeedbackService.save(HRfeedback.builder()
+                        .nameFeedback("Initial test")
+                        .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 9))
+                        .hrUser("Juliette Dubois")
+                        .comments("Good start on the initial test.")
+                        .intern(internService.findById(1)).build());
+        
+        
+        hRfeedbackService.save(HRfeedback.builder()
+                .nameFeedback("Technical Aptitude Review")
+                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 15))
+                .hrUser("Juliette Dubois")
+                .comments("Good start.")
+                .intern(internService.findById(2)).build());
+
+                
+        hRfeedbackService.save(HRfeedback.builder()
+                .nameFeedback("Logic & Reasoning Test")
+                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 18))
+                .hrUser("Antoine Dupont")
+                .comments("Shows potential.")
+                .intern(internService.findById(3)).build());
+
+                
+        hRfeedbackService.save(HRfeedback.builder()
+                .nameFeedback("Introductory Skills Review")
+                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 20))
+                .hrUser("Gabriel Chevalier")
+                .comments("Could improve.")
+                .intern(internService.findById(2)).build());
+                
+        hRfeedbackService.save(HRfeedback.builder()
+                .nameFeedback("Entry-Level Competency Check")
+                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 21))
+                .hrUser("Sophie Marchand")
+                .comments("Solid basics.")
+                .intern(internService.findById(4)).build());
+
+
 
         };
      }
