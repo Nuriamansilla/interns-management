@@ -43,46 +43,46 @@ public class SampleData {
     
         internService.save(
             Intern.builder()
+                .globalID(12345678L)
                 .name("Nuria")
                 .surname1("Mansilla")
                 .surname2("Lopez")
                 .dateOfBirth(LocalDate.of(1998, Month.NOVEMBER, 12))
-                .globalID(12345678L)
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
                 
         internService.save(
             Intern.builder()
+                .globalID(98765432L)
                 .name("Teresa Maria")
                 .surname1("Magnaldi")
                 .surname2("Lago")
                 .dateOfBirth(LocalDate.of(1995, Month.NOVEMBER, 21))
-                .globalID(98765432L)
                 .gender(Gender.WOMAN)
                 .center(Center.MURCIA)
                 .build());
 
         internService.save(
             Intern.builder()
+                .globalID(11223344L)
                 .name("Dhekra")
                 .surname1("Belloumi")
                 .surname2("")
                 .dateOfBirth(LocalDate.of(1997, Month.NOVEMBER, 15))
-                .globalID(11223344L)
                 .gender(Gender.WOMAN)
                 .center(Center.VALENCIA)
                 .build());
 
         internService.save(
             Intern.builder()
+                .globalID(55667788L)
                 .name("Amel")
                 .surname1("Belamria")
                 .surname2("Belahmal")
                 .dateOfBirth(LocalDate.of(1996, Month.NOVEMBER, 30))
-                .globalID(55667788L)
                 .gender(Gender.WOMAN)
-                .center(Center.VALENCIA)
+                .center(Center.MURCIA)
                 .build());
 
 
@@ -90,27 +90,27 @@ public class SampleData {
 
         academicInformationService.saveAcademicInformation(AcademicInformation.builder()             
                                   .educationLevel(EducationLevel.DEGREE)
-                                  .title("Grado en Física")
+                                  .title("Degree in Physics")
                                   .startDate(LocalDate.of(2020, Month.JANUARY, 3))
                                   .endDate(LocalDate.of(2024, Month.JUNE, 3))
                                   .educationCenter(EducationCenter.UNIVERSITY)
-                                  .universityOrIES("Pepito")
+                                  .universityOrIES("UPV")
                                   .intern(internService.findById(1))
                                   .build());
 
         academicInformationService.saveAcademicInformation(AcademicInformation.builder()             
                                   .educationLevel(EducationLevel.FP)
-                                  .title("Informática")
+                                  .title("Advanced Vocational Diploma in Computer Science")
                                   .startDate(LocalDate.of(2020, Month.JANUARY, 10))
                                   .endDate(LocalDate.of(2024, Month.JUNE, 6))
                                   .educationCenter(EducationCenter.IES)
-                                  .universityOrIES("Junito")
-                                  .intern(internService.findById(1))
+                                  .universityOrIES("Abastos")
+                                  .intern(internService.findById(2))
                                   .build());
 
         academicInformationService.saveAcademicInformation(AcademicInformation.builder()             
                                   .educationLevel(EducationLevel.FP)
-                                  .title("Turismo")
+                                  .title("Vocational Training in Tourism")
                                   .startDate(LocalDate.of(2020, Month.JANUARY, 10))
                                   .endDate(LocalDate.of(2024, Month.JUNE, 6))
                                   .educationCenter(EducationCenter.IES)
@@ -120,7 +120,7 @@ public class SampleData {
         
         academicInformationService.saveAcademicInformation(AcademicInformation.builder()             
                                   .educationLevel(EducationLevel.DEGREE)
-                                  .title("Bellas Artes")
+                                  .title("Bachelor of Fine Arts (BFA)")
                                   .startDate(LocalDate.of(2020, Month.JANUARY, 10))
                                   .endDate(LocalDate.of(2024, Month.JUNE, 6))
                                   .educationCenter(EducationCenter.UNIVERSITY)
