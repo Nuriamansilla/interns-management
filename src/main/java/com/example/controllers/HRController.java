@@ -98,7 +98,7 @@ public class HRController {
 
             if (!isValidIsoDate(dateOfFeedBack)) {
 
-                return new ResponseEntity<>(errorBody("The date must follow the DD/MM/YYYY format"),
+                return new ResponseEntity<>(errorBody("The date must follow the YYYY/MM/DD format"),
                         HttpStatus.BAD_REQUEST);
             }
 
