@@ -63,34 +63,20 @@ public class InternController {
         return new ResponseEntity<List<Intern>>(interns, HttpStatus.OK);
     }
 
-    // FIND BY GLOBAL ID
-    
-    // @GetMapping("/{globalId}")
-    // @Transactional
-    // public ResponseEntity<InternResponse> findInternByGlobalID(
-    // @PathVariable Long globalId) throws InstanceNotFoundException {
-    //
-    // try {
-    // InternResponse dto = internService.getInternByGlobalId(globalId);
-    // return ResponseEntity.ok(dto);
-    //
-    // } catch (DataAccessException e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    // }
-    // }
+
 
 // FIND BY GLOBAL ID
 
     @GetMapping("/{globalID}")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<Map<String, Object>> findInternByGlobalID(
+    public ResponseEntity<Map<String, Object>> findInternByGlobalID1(
             @PathVariable(name = "globalID", required = true) long globalID) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
-            InternResponse intern = internService.getInternByGlobalId(globalID);
+            Intern intern = internService.findByGlobalID(globalID);
             if (intern != null) {
                 String successMessage = "Intern with global ID " + globalID + " has been found";
                 responseAsMap.put("message", successMessage);
@@ -313,6 +299,39 @@ public class InternController {
 
         return responseEntity;
     }
+
+        // Busqueda por Global ID (DTO)
+
+    @GetMapping(path = "/interns-by-globalid/{globalID}")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<Map<String, Object>> findInternByGlobalID(
+            @PathVariable(name = "globalID", required = true) long globalID) {
+
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        var responseAsMap = new HashMap<String, Object>();
+
+        try {
+            InternResponse intern = internService.getInternByGlobalId(globalID);
+            if (intern != null) {
+                String successMessage = "Intern with global ID " + globalID + " has been found";
+                responseAsMap.put("message", successMessage);
+                responseAsMap.put("intern", intern);
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
+            } else {
+                String notFoundMessage = "Intern with global ID " + globalID + " has not been found";
+                responseAsMap.put("notFoundMessage", notFoundMessage);
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.NOT_FOUND);
+            }
+        } catch (DataAccessException e) {
+            String errorMessage = "Several error and the most likely cause is: "
+                    + e.getMostSpecificCause().getMessage();
+            responseAsMap.put("message", errorMessage);
+            responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return responseEntity;
+    }
+    
 
     
     // //Busqueda por nombre
