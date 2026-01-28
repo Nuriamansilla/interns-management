@@ -78,7 +78,7 @@ public class HRController {
             Intern intern = internService.findByGlobalID(globalId);
           
          if (intern == null) {
-                return new ResponseEntity<>(errorBody("El intern con globalId " + globalId + " no se ha encontrado"),
+                return new ResponseEntity<>(errorBody("Intern with globalId " + globalId + " has not been found"),
                         HttpStatus.NOT_FOUND);
             }
 
@@ -88,22 +88,22 @@ public class HRController {
             String hrUser = asString(body, "hrUser");
             String comments = asString(body, "comments");
 
-            if (nameFeedback== null || dateOfFeedBack == null || hrUser == null || comments == null) {
+            if (nameFeedback == null || dateOfFeedBack == null || hrUser == null || comments == null) {
             
                    return new ResponseEntity<>(errorBody
-                    ("Faltan campos obligatorios: name, date, hrUser, comments"),
+                    ("Required fields are missing: name, date, hrUser, comments"),
                         HttpStatus.BAD_REQUEST);
             };
 
             if (!isValidIsoDate(dateOfFeedBack)) {
 
-                return new ResponseEntity<>(errorBody("date debe tener formato DD/MM/YYYY"),
+                return new ResponseEntity<>(errorBody("The date must follow the DD/MM/YYYY format"),
                         HttpStatus.BAD_REQUEST);
             }
             
             if (comments.length() > 1000) {
 
-                return new ResponseEntity<>(errorBody("comments no puede superar 1000 caracteres"),
+                return new ResponseEntity<>(errorBody("Comments are limited to 1000 characters"),
                         HttpStatus.BAD_REQUEST);
             }
            
@@ -120,7 +120,7 @@ public class HRController {
             HRfeedback saved = hRfeedbackService.save(f); // <-- UNO: save(...)
 
             // 4) Respuesta OK
-            map.put("message", "Se ha añadido el feedback al intern con globalId " + globalId);
+            map.put("message", "Feedback has been added to the intern with globalId" + globalId);
 
             
                map.put("feedbackId", saved.getId());
@@ -131,7 +131,7 @@ public class HRController {
 
              } catch (DataAccessException e) {
             // Errores de BBDD
-            map.put("message", "Error grave y la causa más probable es: " + e.getMostSpecificCause().getMessage());
+            map.put("message", "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     
@@ -156,7 +156,7 @@ try {
             Intern intern = internService.findByGlobalID(globalId);
             if (intern == null) {
                 return new ResponseEntity<>(
-                        errorBody("El intern con globalId " + globalId + " no se ha encontrado"),
+                        errorBody("The intern with global ID " + globalId + " has not been found"),
                         HttpStatus.NOT_FOUND
                 );
             }
@@ -187,12 +187,12 @@ try {
             profile.put("hRfeedbacks", fbList);
 
             // 4) Tu patrón de respuesta
-            map.put("message", "Perfil HR del intern " + globalId);
+            map.put("message", "HR profile for the intern" + globalId);
             map.put("profile", profile);
             return ResponseEntity.ok(map);
 
         } catch (DataAccessException e) {
-            map.put("message", "Error grave y la causa más probable es: " + e.getMostSpecificCause().getMessage());
+            map.put("message", "Several error and the most likely cause is: " + e.getMostSpecificCause().getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

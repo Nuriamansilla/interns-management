@@ -66,7 +66,6 @@ public class InternController {
 
     // FIND BY GLOBAL ID
     
-   
     // @GetMapping("/{globalId}")
     // @Transactional
     // public ResponseEntity<InternResponse> findInternByGlobalID(
@@ -81,7 +80,7 @@ public class InternController {
     //     }
     // }   
 
-// Método antes del DTO
+// FIND BY GLOBAL ID
 
  @GetMapping("/{globalID}")
     public ResponseEntity<Map<String, Object>> findInternByGlobalID(
