@@ -43,6 +43,13 @@ public class Intern implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // TRES LÍNEAS COMENTADAS PORQUE DAN ERROR: NO DESCOMENTAR
+    // // @Min(value = 10000000, message = "globalID must have exactly 8 digit")
+    // // @Max(value = 99999999, message = "globalID must have exactly 8 digit")
+    // // @Column(name = "global_id", nullable = false, unique = true)
+    @NotNull(message = "The intern's global ID  is required and cannot be null")
+    private Long globalID;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -61,13 +68,6 @@ public class Intern implements Serializable {
     @Past(message = "The intern's date of birth is required and must be earlier than today")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-
-    // TRES LÍNEAS COMENTADAS PORQUE DAN ERROR: NO DESCOMENTAR
-    // // @Min(value = 10000000, message = "globalID must have exactly 8 digit")
-    // // @Max(value = 99999999, message = "globalID must have exactly 8 digit")
-    // // @Column(name = "global_id", nullable = false, unique = true)
-    @NotNull(message = "The intern's global ID  is required and cannot be null")
-    private Long globalID;
 
     @NotNull(message = "The intern's gender is required")
     @Enumerated(EnumType.STRING)
