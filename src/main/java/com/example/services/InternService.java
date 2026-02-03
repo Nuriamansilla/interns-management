@@ -25,5 +25,6 @@ public interface InternService {
     InternResponse findBySurname1(String surname1);
 
     List<InternResponse> searchInterns(String query);
+    boolean existsByGlobalID(Long globalID);
     
 }

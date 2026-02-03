@@ -57,6 +57,12 @@ public class InternServiceImpl implements InternService {
         return internDao.findByGlobalID(globalID);
     }
 
+     @Override
+    public boolean existsByGlobalID(Long globalID) {
+        return internDao.existsByGlobalID(globalID);
+        
+    }
+
     // DTO METHODS
 
     // public InternResponse findByName(String name) {
@@ -132,5 +138,7 @@ public class InternServiceImpl implements InternService {
         return internMapper.mapToInternResponseUS15(interns);
 
     }
+
+   
 
 }

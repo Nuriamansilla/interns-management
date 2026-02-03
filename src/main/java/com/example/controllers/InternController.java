@@ -108,7 +108,7 @@ public class InternController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
 
-        // Comprobar si el producto recibido en el cuerpo de la petición tiene errores
+        //1. Comprobar si el producto recibido en el cuerpo de la petición tiene errores
 
         if (results.hasErrors()) {
 
@@ -118,8 +118,7 @@ public class InternController {
             /*
              * Hay que recorrer la lista de ObjecError para recuperar los mensajes de error
              * por defecto que voy a mostrar al cliente que ha realizado la petición, es
-             * decir,
-             * que ha enviado el producto mal formado
+             * decir, que ha enviado el producto mal formado
              */
 
             /*
@@ -138,8 +137,18 @@ public class InternController {
             return responseEntity;
         }
 
+        
+        // 2. Validar si el Global id ya existe
+        if (internService.existsByGlobalID(intern.getGlobalID())) {
+             responseAsMap.put("error", "The Global ID already exists. Please use a different one.");
+            responseAsMap.put("globalID", intern.getGlobalID());
+
+            return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+         }
+
+
         /*
-         * Si no hay errores vamos a persistir/guardar el intern recibido en el cuerpo
+         * 3. Si no hay errores vamos a persistir/guardar el intern recibido en el cuerpo
          * de la petición
          * y devolver información al respecto como se requiere para una API REST
          */

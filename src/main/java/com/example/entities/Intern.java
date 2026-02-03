@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -46,8 +47,8 @@ public class Intern implements Serializable {
     // TRES LÍNEAS COMENTADAS PORQUE DAN ERROR: NO DESCOMENTAR
     // // @Min(value = 10000000, message = "globalID must have exactly 8 digit")
     // // @Max(value = 99999999, message = "globalID must have exactly 8 digit")
-    // // @Column(name = "global_id", nullable = false, unique = true)
-    @NotNull(message = "The intern's global ID  is required and cannot be null")
+    @Column(name = "global_id", nullable = false, unique = true)
+    //@NotNull(message = "The intern's global ID  is required and cannot be null")
     private Long globalID;
 
     @Id
