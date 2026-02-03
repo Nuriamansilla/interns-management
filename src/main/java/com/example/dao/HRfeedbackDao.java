@@ -15,8 +15,8 @@ public interface HRfeedbackDao extends JpaRepository<HRfeedback, Integer> {
     @Query("""
             select f
             from HRfeedback f
-            where f.intern.globalID = :globalId
-            order by f.dateOfFeedBack desc
+            where f.intern.globalId = :globalId
+            order by f.dateOfFeedback desc
             """)
     List<HRfeedback> findAllByInternGlobalIdOrdered(@Param("globalId") Long globalId);
 

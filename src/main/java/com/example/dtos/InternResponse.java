@@ -11,7 +11,7 @@ public record InternResponse(
           String name,
           String surname1,
           String surname2,
-          Long globalID,
+          Long globalId,
           String gender,
           String center,
 

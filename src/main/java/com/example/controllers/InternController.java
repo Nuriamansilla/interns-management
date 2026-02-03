@@ -67,23 +67,23 @@ public class InternController {
 
 // FIND BY GLOBAL ID
 
-    @GetMapping("/{globalID}")
+    @GetMapping("/{globalId}")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternByGlobalID1(
-            @PathVariable(name = "globalID", required = true) long globalID) {
+            @PathVariable(name = "globalId", required = true) long globalId) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
-            Intern intern = internService.findByGlobalID(globalID);
+            Intern intern = internService.findByGlobalId(globalId);
             if (intern != null) {
-                String successMessage = "Intern with global ID " + globalID + " has been found";
+                String successMessage = "Intern with global Id " + globalId + " has been found";
                 responseAsMap.put("message", successMessage);
                 responseAsMap.put("intern", intern);
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
-                String notFoundMessage = "Intern with global ID " + globalID + " has not been found";
+                String notFoundMessage = "Intern with global Id " + globalId + " has not been found";
                 responseAsMap.put("notFoundMessage", notFoundMessage);
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.NOT_FOUND);
             }
@@ -139,9 +139,9 @@ public class InternController {
 
         
         // 2. Validar si el Global id ya existe
-        if (internService.existsByGlobalID(intern.getGlobalID())) {
-             responseAsMap.put("error", "The Global ID already exists. Please use a different one.");
-            responseAsMap.put("globalID", intern.getGlobalID());
+        if (internService.existsByGlobalId(intern.getGlobalId())) {
+             responseAsMap.put("error", "That Global Id already exists. Please use a different one.");
+            responseAsMap.put("globalId", intern.getGlobalId());
 
             return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
          }
@@ -171,11 +171,11 @@ public class InternController {
 
     // UPDATE
 
-    @PutMapping("/{globalID}")
+    @PutMapping("/{globalId}")
     @Transactional
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> updateIntern(@Valid @RequestBody Intern intern,
-            BindingResult results, @PathVariable(name = "globalID", required = true) Long globalID) {
+            BindingResult results, @PathVariable(name = "globalId", required = true) Long globalID) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Map<String, Object> responseAsMap = new HashMap<>();
@@ -197,7 +197,7 @@ public class InternController {
         }
 
         try {
-            intern.setGlobalID(globalID);
+            intern.setGlobalId(globalID);
             Intern internSaved = internService.save(intern);
             String message = "Intern has been successfully updated";
             responseAsMap.put("message", message);
@@ -216,22 +216,22 @@ public class InternController {
 
     // DELETE
 
-    @DeleteMapping("/{globalID}")
+    @DeleteMapping("/{globalId}")
     @Transactional
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> deleteIntern(
-            @PathVariable(name = "globalID", required = true) long globalID) {
+            @PathVariable(name = "globalId", required = true) long globalId) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
-            internService.delete(internService.findByGlobalID(globalID));
-            String successMessage = "The intern with global ID " + globalID + " has been deleted.";
+            internService.delete(internService.findByGlobalId(globalId));
+            String successMessage = "The intern with global Id " + globalId + " has been deleted.";
             responseAsMap.put("message", successMessage);
             responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
         } catch (DataAccessException e) {
-            String errorMessage = "The intern with global ID " + globalID
+            String errorMessage = "The intern with global Id " + globalId
                     + " could not be deleted, the most likely cause of the error is:"
                     + e.getMostSpecificCause();
             responseAsMap.put("message", errorMessage);
@@ -311,23 +311,23 @@ public class InternController {
 
         // Busqueda por Global ID (DTO)
 
-    @GetMapping(path = "/interns-by-globalid/{globalID}")
+    @GetMapping(path = "/interns-by-globalid/{globalId}")
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<Map<String, Object>> findInternByGlobalID(
-            @PathVariable(name = "globalID", required = true) long globalID) {
+            @PathVariable(name = "globalId", required = true) long globalId) {
 
         ResponseEntity<Map<String, Object>> responseEntity = null;
         var responseAsMap = new HashMap<String, Object>();
 
         try {
-            InternResponse intern = internService.getInternByGlobalId(globalID);
+            InternResponse intern = internService.getInternByGlobalId(globalId);
             if (intern != null) {
-                String successMessage = "Intern with global ID " + globalID + " has been found";
+                String successMessage = "Intern with global Id " + globalId + " has been found";
                 responseAsMap.put("message", successMessage);
                 responseAsMap.put("intern", intern);
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.OK);
             } else {
-                String notFoundMessage = "Intern with global ID " + globalID + " has not been found";
+                String notFoundMessage = "Intern with global Id " + globalId + " has not been found";
                 responseAsMap.put("notFoundMessage", notFoundMessage);
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.NOT_FOUND);
             }

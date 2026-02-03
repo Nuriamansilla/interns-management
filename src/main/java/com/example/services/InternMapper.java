@@ -20,7 +20,7 @@ public interface InternMapper {
     @Mapping(source = "intern.name", target = "name")
     @Mapping(source = "intern.surname1", target = "surname1")
     @Mapping(source = "intern.surname2", target = "surname2")
-    @Mapping(source = "intern.globalID", target = "globalID")
+    @Mapping(source = "intern.globalId", target = "globalId")
     @Mapping(source = "intern.gender", target = "gender")
     @Mapping(source = "intern.center", target = "center")
     @Mapping(source = "academicInformation.title", target = "title")
@@ -35,7 +35,7 @@ public interface InternMapper {
     @Mapping(source = "intern.surname1", target = "surname1")
     @Mapping(source = "intern.surname2", target = "surname2")
     @Mapping(source = "intern.center", target = "center")
-    @Mapping(source = "intern.globalID", target = "globalID")
+    @Mapping(source = "intern.globalId", target = "globalId")
     InternResponse mapToInternResponseUS15(Intern intern);
     List<InternResponse> mapToInternResponseUS15(List<Intern> interns);
  

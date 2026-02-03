@@ -39,7 +39,7 @@ public class HRController {
     // ADD A FEEDBACK
     // ******************************************************
     // ******************************************************
-    // POST http://localhost:8080/interns/55667788/hRfeedbacks donde globalID es
+    // POST http://localhost:8080/interns/55667788/hRfeedback donde globalId es
     // 55667788 *****
 
     private static final DateTimeFormatter ISO_DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -65,7 +65,7 @@ public class HRController {
     // Body esperado: { "name": "...", "date": "DD/MM/YYYY", "hrUser": "...",
     // "comments": "..." }
 
-    @PostMapping("/{globalId}/hRfeedbacks")
+    @PostMapping("/{globalId}/hRfeedback")
     @PreAuthorize("hasRole('HRUSER')")
     public ResponseEntity<Map<String, Object>> addOne(
             @PathVariable(name = "globalId", required = true) Long globalId,
@@ -76,7 +76,7 @@ public class HRController {
 
         try {
             // 1) Verificar que el intern existe
-            Intern intern = internService.findByGlobalID(globalId);
+            Intern intern = internService.findByGlobalId(globalId);
           
          if (intern == null) {
                 return new ResponseEntity<>(errorBody("Intern with globalId " + globalId + " has not been found"),
@@ -85,18 +85,18 @@ public class HRController {
 
             // 2) Extraer campos desde el body (sin DTO) y validar manualmente
             String nameFeedback = asString(body, "nameFeedback");
-            String dateOfFeedBack = asString(body, "dateOfFeedBack");
+            String dateOfFeedback = asString(body, "dateOfFeedBack");
             String hrUser = asString(body, "hrUser");
             String comments = asString(body, "comments");
 
-            if (nameFeedback == null || dateOfFeedBack == null || hrUser == null || comments == null) {
+            if (nameFeedback == null || dateOfFeedback == null || hrUser == null || comments == null) {
             
                    return new ResponseEntity<>(errorBody
                     ("Required fields are missing: name, date, hrUser, comments"),
                         HttpStatus.BAD_REQUEST);
             };
 
-            if (!isValidIsoDate(dateOfFeedBack)) {
+            if (!isValidIsoDate(dateOfFeedback)) {
 
                 return new ResponseEntity<>(errorBody("The date must follow the YYYY/MM/DD format"),
                         HttpStatus.BAD_REQUEST);
@@ -112,7 +112,7 @@ public class HRController {
             HRfeedback f = HRfeedback.builder()
                     .intern(intern)
                     .nameFeedback(nameFeedback)
-                    .dateOfFeedBack(LocalDate.parse(dateOfFeedBack, ISO_DATE))
+                    .dateOfFeedback(LocalDate.parse(dateOfFeedback, ISO_DATE))
                     .hrUser(hrUser)
                     .comments(comments)
                     .build();
@@ -125,7 +125,7 @@ public class HRController {
             map.put("feedbackId", saved.getId());
 
             return ResponseEntity
-                    .created(URI.create("/interns/" + globalId + "/feedbacks/" + saved.getId()))
+                    .created(URI.create("/interns/" + globalId + "/feedback/" + saved.getId()))
                     .body(map);
 
         } catch (DataAccessException e) {
@@ -152,7 +152,7 @@ public class HRController {
 
         try {
             // 1) Verificar intern por globalID
-            Intern intern = internService.findByGlobalID(globalId);
+            Intern intern = internService.findByGlobalId(globalId);
             if (intern == null) {
                 return new ResponseEntity<>(
                         errorBody("The intern with global ID " + globalId + " has not been found"),
@@ -161,29 +161,29 @@ public class HRController {
             }
 
             // 2) Cargar feedbacks ordenados desc por fecha
-            List<HRfeedback> hRfeedbacks = hRfeedbackService.findAllByInternGlobalIdOrdered(globalId);
+            List<HRfeedback> hRfeedback = hRfeedbackService.findAllByInternGlobalIdOrdered(globalId);
 
             // 3) Construir el "profile" mínimo que pide la US
             Map<String, Object> profile = new LinkedHashMap<>();
             profile.put("name", intern.getName());
             profile.put("surname1", intern.getSurname1());
             profile.put("surname2", intern.getSurname2());
-            profile.put("globalID", intern.getGlobalID()); // respeta tu casing
+            profile.put("globalId", intern.getGlobalId()); 
             profile.put("gender", intern.getGender().name());
             profile.put("center", intern.getCenter().name());
 
             // Mapear feedbacks -> List<Map<String,Object>>
             List<Map<String, Object>> fbList = new ArrayList<>();
-            for (HRfeedback f : hRfeedbacks) {
+            for (HRfeedback f : hRfeedback) {
                 Map<String, Object> fMap = new LinkedHashMap<>();
                 fMap.put("id", f.getId());
                 fMap.put("nameFeedback", f.getNameFeedback());
-                fMap.put("dateOfFeedBack", f.getDateOfFeedBack().format(ISO_DATE));
+                fMap.put("dateOfFeedBack", f.getDateOfFeedback().format(ISO_DATE));
                 fMap.put("hrUser", f.getHrUser());
                 fMap.put("comments", f.getComments());
                 fbList.add(fMap);
             }
-            profile.put("hRfeedbacks", fbList);
+            profile.put("hRfeedback", fbList);
 
             // 4) Tu patrón de respuesta
             map.put("message", "HR profile for the intern" + globalId);

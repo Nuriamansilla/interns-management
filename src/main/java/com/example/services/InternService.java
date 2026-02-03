@@ -18,13 +18,13 @@ public interface InternService {
     Intern findById(int id);
     Intern save(Intern intern);
     void delete(Intern intern);
-    Intern findByGlobalID(long globalID);
+    Intern findByGlobalId(long globalId);
 
-    InternResponse getInternByGlobalId(Long globalID);
+    InternResponse getInternByGlobalId(Long globalId);
     InternResponse findByName(String name);
     InternResponse findBySurname1(String surname1);
 
     List<InternResponse> searchInterns(String query);
-    boolean existsByGlobalID(Long globalID);
+    boolean existsByGlobalId(Long globalId);
     
 }

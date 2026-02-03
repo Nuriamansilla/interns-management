@@ -22,7 +22,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "HRfeedbacks")
+@Table(name = "HRfeedback")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -40,13 +40,13 @@ public class HRfeedback implements Serializable {
 
     @NotNull(message = "registered date of the feedback is requiered")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOfFeedBack;
+    private LocalDate dateOfFeedback;
 
     @NotNull(message = "The name of the person who gives the feedback is required")
     private String hrUser;
 
     @NotNull(message = "At least one feedback is required is requiered")
-    @Size(max = 1000, message = "feedbacks must not exceed 1000 characters")
+    @Size(max = 1000, message = "feedback must not exceed 1000 characters")
     private String comments;
 
     // CORRECTO: NO MODIFICAR

@@ -20,6 +20,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -44,12 +46,12 @@ public class Intern implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // TRES LÍNEAS COMENTADAS PORQUE DAN ERROR: NO DESCOMENTAR
-    // // @Min(value = 10000000, message = "globalID must have exactly 8 digit")
-    // // @Max(value = 99999999, message = "globalID must have exactly 8 digit")
+
+    @Min(value = 10000000, message = "globalId must have exactly 8 digit")
+    @Max(value = 99999999, message = "globalId must have exactly 8 digit")
     @Column(name = "global_id", nullable = false, unique = true)
-    //@NotNull(message = "The intern's global ID  is required and cannot be null")
-    private Long globalID;
+    @NotNull(message = "The intern's global Id  is required and cannot be null")
+    private Long globalId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,6 +95,6 @@ public class Intern implements Serializable {
     // @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy =
     // "intern")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private List<HRfeedback> hrfeedbacks;
+    private List<HRfeedback> hrfeedback;
 
 }

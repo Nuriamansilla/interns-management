@@ -46,7 +46,7 @@ public class SampleData {
     
         internService.save(
             Intern.builder()
-                .globalID(12345678L)
+                .globalId(12345678L)
                 .name("Nuria")
                 .surname1("Mansilla")
                 .surname2("Lopez")
@@ -57,7 +57,7 @@ public class SampleData {
                 
         internService.save(
             Intern.builder()
-                .globalID(98765432L)
+                .globalId(98765432L)
                 .name("Teresa Maria")
                 .surname1("Magnaldi")
                 .surname2("Lago")
@@ -68,7 +68,7 @@ public class SampleData {
 
         internService.save(
             Intern.builder()
-                .globalID(11223344L)
+                .globalId(11223344L)
                 .name("Dhekra")
                 .surname1("Belloumi")
                 .surname2("")
@@ -79,7 +79,7 @@ public class SampleData {
 
         internService.save(
             Intern.builder()
-                .globalID(55667788L)
+                .globalId(55667788L)
                 .name("Amel")
                 .surname1("Belamria")
                 .surname2("Belahmal")
@@ -196,7 +196,7 @@ public class SampleData {
 
         hRfeedbackService.save(HRfeedback.builder()
                         .nameFeedback("Initial test")
-                        .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 9))
+                        .dateOfFeedback(LocalDate.of(2025, Month.DECEMBER, 9))
                         .hrUser("Juliette Dubois")
                         .comments("Good start on the initial test.")
                         .intern(internService.findById(1)).build());
@@ -204,7 +204,7 @@ public class SampleData {
         
         hRfeedbackService.save(HRfeedback.builder()
                 .nameFeedback("Technical Aptitude Review")
-                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 15))
+                .dateOfFeedback(LocalDate.of(2025, Month.DECEMBER, 15))
                 .hrUser("Juliette Dubois")
                 .comments("Good start.")
                 .intern(internService.findById(2)).build());
@@ -212,7 +212,7 @@ public class SampleData {
                 
         hRfeedbackService.save(HRfeedback.builder()
                 .nameFeedback("Logic & Reasoning Test")
-                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 18))
+                .dateOfFeedback(LocalDate.of(2025, Month.DECEMBER, 18))
                 .hrUser("Antoine Dupont")
                 .comments("Shows potential.")
                 .intern(internService.findById(3)).build());
@@ -220,14 +220,14 @@ public class SampleData {
                 
         hRfeedbackService.save(HRfeedback.builder()
                 .nameFeedback("Introductory Skills Review")
-                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 20))
+                .dateOfFeedback(LocalDate.of(2025, Month.DECEMBER, 20))
                 .hrUser("Gabriel Chevalier")
                 .comments("Could improve.")
                 .intern(internService.findById(2)).build());
                 
         hRfeedbackService.save(HRfeedback.builder()
                 .nameFeedback("Entry-Level Competency Check")
-                .dateOfFeedBack(LocalDate.of(2025, Month.DECEMBER, 21))
+                .dateOfFeedback(LocalDate.of(2025, Month.DECEMBER, 21))
                 .hrUser("Sophie Marchand")
                 .comments("Solid basics.")
                 .intern(internService.findById(4)).build());

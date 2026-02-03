@@ -13,20 +13,20 @@ import com.example.entities.Intern;
 @Repository
 public interface InternDao extends JpaRepository<Intern, Integer> {
 
-    Intern findByGlobalID(Long globalID);
+    Intern findByGlobalId(Long globalId);
     Intern findByName(String name);
     Intern findBySurname1(String surname1);
-    boolean existsByGlobalID(Long globalID);
+    boolean existsByGlobalId(Long globalId);
 
     @Query("""
             SELECT i FROM Intern i
             WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :query, '%'))
                OR LOWER(i.surname1) LIKE LOWER(CONCAT('%', :query, '%'))
-               OR LOWER(CAST(i.globalID AS string)) LIKE LOWER(CONCAT('%', :query, '%'))
+               OR LOWER(CAST(i.globalId AS string)) LIKE LOWER(CONCAT('%', :query, '%'))
                OR LOWER(CAST(i.center AS string)) LIKE LOWER(CONCAT('%', :query, '%'))
             """)
 
     List<Intern> searchInterns(@Param("query") String query);
 
-    Optional<Intern> findOptionalByGlobalID(Long globalID);
+    Optional<Intern> findOptionalByGlobalId(Long globalId);
 }

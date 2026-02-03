@@ -53,13 +53,13 @@ public class InternServiceImpl implements InternService {
     }
 
     @Override
-    public Intern findByGlobalID(long globalID) {
-        return internDao.findByGlobalID(globalID);
+    public Intern findByGlobalId(long globalId) {
+        return internDao.findByGlobalId(globalId);
     }
 
      @Override
-    public boolean existsByGlobalID(Long globalID) {
-        return internDao.existsByGlobalID(globalID);
+    public boolean existsByGlobalId(Long globalId) {
+        return internDao.existsByGlobalId(globalId);
         
     }
 
@@ -104,8 +104,8 @@ public class InternServiceImpl implements InternService {
     // }
 
     @Override
-    public InternResponse getInternByGlobalId(Long globalID) {
-        Intern intern = findByGlobalID(globalID);
+    public InternResponse getInternByGlobalId(Long globalId) {
+        Intern intern = findByGlobalId(globalId);
         return buildInternResponse(intern);
     }
 
